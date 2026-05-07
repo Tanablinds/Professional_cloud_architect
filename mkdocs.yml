@@ -1,0 +1,69 @@
+site_name: GCP Professional Cloud Architect Notes
+site_description: Structured study notes for the Google Professional Cloud Architect exam
+site_author: PCA Candidate
+site_url: https://Tanablinds.github.io/Professional_cloud_architect/
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: blue
+      accent: light blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: blue
+      accent: light blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+  icon:
+    repo: fontawesome/brands/github
+
+repo_url: https://github.com/Tanablinds/Professional_cloud_architect
+repo_name: Tanablinds/Professional_cloud_architect
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - attr_list
+  - md_in_html
+
+nav:
+  - Home: index.md
+  - Foundations:
+    - "01 · Cloud Fundamentals & Core Infrastructure": 01-cloud-fundamentals-core-infrastructure.md
+    - "02 · Essential Core Services": 02-essential-core-services.md
+  - Compute & Scaling:
+    - "03 · Elastic Scaling & Automation": 03-elastic-scaling-automation.md
+    - "09 · Kubernetes Engine (GKE)": 09-kubernetes-engine-gke.md
+    - "10 · Terraform on GCP": 10-terraform-gcp.md
+  - Networking:
+    - "04 · Network Fundamentals": 04-network-fundamentals.md
+    - "05 · Network Architecture": 05-network-architecture.md
+    - "06 · Hybrid & Multicloud Connectivity": 06-hybrid-multicloud-connectivity.md
+  - Security & Operations:
+    - "07 · Managing Security on GCP": 07-managing-security-gcp.md
+    - "11 · Logging & Monitoring": 11-logging-monitoring-gcp.md
+    - "13 · Reliable Infrastructure": 13-reliable-infrastructure.md
