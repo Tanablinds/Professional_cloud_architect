@@ -1,0 +1,3994 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Structured study notes for the Google Professional Cloud Architect exam">
+      
+      
+        <meta name="author" content="PCA Candidate">
+      
+      
+        <link rel="canonical" href="https://Tanablinds.github.io/Professional_cloud_architect/13-reliable-infrastructure/">
+      
+      
+        <link rel="prev" href="../11-logging-monitoring-gcp/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Reliable Cloud Infrastructure — Design and Process - GCP Professional Cloud Architect Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#reliable-cloud-infrastructure-design-and-process" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="GCP Professional Cloud Architect Notes" class="md-header__button md-logo" aria-label="GCP Professional Cloud Architect Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GCP Professional Cloud Architect Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Reliable Cloud Infrastructure — Design and Process
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Tanablinds/Professional_cloud_architect" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Tanablinds/Professional_cloud_architect
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../01-cloud-fundamentals-core-infrastructure/" class="md-tabs__link">
+          
+  
+  
+  Foundations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../03-elastic-scaling-automation/" class="md-tabs__link">
+          
+  
+  
+  Compute & Scaling
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../04-network-fundamentals/" class="md-tabs__link">
+          
+  
+  
+  Networking
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../07-managing-security-gcp/" class="md-tabs__link">
+          
+  
+  
+  Security & Operations
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="GCP Professional Cloud Architect Notes" class="md-nav__button md-logo" aria-label="GCP Professional Cloud Architect Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GCP Professional Cloud Architect Notes
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Tanablinds/Professional_cloud_architect" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Tanablinds/Professional_cloud_architect
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foundations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Foundations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-cloud-fundamentals-core-infrastructure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    01 · Cloud Fundamentals & Core Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-essential-core-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    02 · Essential Core Services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compute & Scaling
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Compute & Scaling
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-elastic-scaling-automation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    03 · Elastic Scaling & Automation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-kubernetes-engine-gke/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    09 · Kubernetes Engine (GKE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-terraform-gcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10 · Terraform on GCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Networking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Networking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-network-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    04 · Network Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-network-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 · Network Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-hybrid-multicloud-connectivity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06 · Hybrid & Multicloud Connectivity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security & Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Security & Operations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-managing-security-gcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    07 · Managing Security on GCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-logging-monitoring-gcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11 · Logging & Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13 · Reliable Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13 · Reliable Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#module-1-defining-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 1: Defining Services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 1: Defining Services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requirements-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements Framework
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Requirements Framework">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#roles-personas-user-stories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roles → Personas → User Stories
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kpis-and-smart-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KPIs and SMART Criteria
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sli-slo-sla-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SLI → SLO → SLA Hierarchy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-2-microservice-design-and-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 2: Microservice Design and Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 2: Microservice Design and Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#monolith-vs-microservices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Monolith vs. Microservices
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decomposing-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decomposing Applications
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stateful-vs-stateless-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stateful vs. Stateless Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-12-factor-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 12-Factor App
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rest-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REST Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-management-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Management Tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-3-devops-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 3: DevOps Automation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 3: DevOps Automation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cicd-pipeline-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI/CD Pipeline Components
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iac-mindset-cloud-vs-on-premises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IaC Mindset: Cloud vs. On-Premises
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-4-choosing-storage-and-data-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 4: Choosing Storage and Data Solutions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 4: Choosing Storage and Data Solutions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#storage-portfolio-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage Portfolio Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-storage-selection-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Storage Selection Criteria
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Storage Selection Criteria">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#availability-slas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Availability SLAs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consistency-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consistency Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scaling-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scaling Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#durability-shared-responsibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Durability (Shared Responsibility)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storage-decision-chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage Decision Chart
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-transfer-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Transfer Options
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-5-network-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 5: Network Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 5: Network Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vpc-design-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VPC Design Principles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-balancer-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Load Balancer Selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-connectivity-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Connectivity Options
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-6-deploying-applications-to-google-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 6: Deploying Applications to Google Cloud
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 6: Deploying Applications to Google Cloud">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compute-platform-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compute Platform Selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-7-designing-reliable-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 7: Designing Reliable Systems
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 7: Designing Reliable Systems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-performance-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Performance Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failure-modes-and-mitigations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure Modes and Mitigations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Failure Modes and Mitigations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-single-points-of-failure-n2-redundancy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Single Points of Failure → N+2 Redundancy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-correlated-failures-distribute-across-failure-domains" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Correlated Failures → Distribute Across Failure Domains
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cascading-failures-health-checks-autoscaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Cascading Failures → Health Checks + Autoscaling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-query-of-death-monitoring-developer-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Query of Death → Monitoring + Developer Feedback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-positive-feedback-cycle-retry-storm-exponential-backoff-circuit-breaker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Positive Feedback Cycle (Retry Storm) → Exponential Backoff + Circuit Breaker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-accidental-deletion-lazy-deletion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Accidental Deletion → Lazy Deletion
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high-availability-by-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High Availability by Service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disaster-recovery-planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disaster Recovery Planning
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-8-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 8: Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 8: Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#security-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Best Practices
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#securing-people" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Securing People
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#securing-machine-access-service-accounts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Securing Machine Access (Service Accounts)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#encryption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encryption
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-9-maintenance-and-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 9: Maintenance and Monitoring
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 9: Maintenance and Monitoring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deployment-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment Strategies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cost-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cost Optimization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario-breakdowns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Scenario Breakdowns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Scenario Breakdowns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-designing-for-high-availability-multi-tier-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario: Designing for High Availability (Multi-tier App)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-disaster-recovery-decision-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario: Disaster Recovery Decision Matrix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-choosing-load-balancers-for-a-travel-portal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario: Choosing Load Balancers for a Travel Portal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-security-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario: Security Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-exam-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔑 Key Exam Tips
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#module-1-defining-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 1: Defining Services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 1: Defining Services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requirements-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements Framework
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Requirements Framework">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#roles-personas-user-stories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roles → Personas → User Stories
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kpis-and-smart-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        KPIs and SMART Criteria
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sli-slo-sla-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SLI → SLO → SLA Hierarchy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-2-microservice-design-and-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 2: Microservice Design and Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 2: Microservice Design and Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#monolith-vs-microservices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Monolith vs. Microservices
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decomposing-applications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decomposing Applications
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stateful-vs-stateless-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stateful vs. Stateless Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-12-factor-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 12-Factor App
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rest-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REST Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-management-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        API Management Tools
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-3-devops-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 3: DevOps Automation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 3: DevOps Automation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cicd-pipeline-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI/CD Pipeline Components
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iac-mindset-cloud-vs-on-premises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IaC Mindset: Cloud vs. On-Premises
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-4-choosing-storage-and-data-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 4: Choosing Storage and Data Solutions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 4: Choosing Storage and Data Solutions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#storage-portfolio-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage Portfolio Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-storage-selection-criteria" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Storage Selection Criteria
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Storage Selection Criteria">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#availability-slas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Availability SLAs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#consistency-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Consistency Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scaling-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scaling Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#durability-shared-responsibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Durability (Shared Responsibility)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storage-decision-chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage Decision Chart
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-transfer-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Transfer Options
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-5-network-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 5: Network Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 5: Network Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vpc-design-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VPC Design Principles
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-balancer-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Load Balancer Selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-connectivity-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Connectivity Options
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-6-deploying-applications-to-google-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 6: Deploying Applications to Google Cloud
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 6: Deploying Applications to Google Cloud">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#compute-platform-selection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compute Platform Selection
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-7-designing-reliable-systems" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 7: Designing Reliable Systems
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 7: Designing Reliable Systems">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-performance-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Performance Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failure-modes-and-mitigations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure Modes and Mitigations
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Failure Modes and Mitigations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-single-points-of-failure-n2-redundancy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Single Points of Failure → N+2 Redundancy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-correlated-failures-distribute-across-failure-domains" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Correlated Failures → Distribute Across Failure Domains
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-cascading-failures-health-checks-autoscaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Cascading Failures → Health Checks + Autoscaling
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-query-of-death-monitoring-developer-feedback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Query of Death → Monitoring + Developer Feedback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-positive-feedback-cycle-retry-storm-exponential-backoff-circuit-breaker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Positive Feedback Cycle (Retry Storm) → Exponential Backoff + Circuit Breaker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-accidental-deletion-lazy-deletion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Accidental Deletion → Lazy Deletion
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high-availability-by-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High Availability by Service
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disaster-recovery-planning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Disaster Recovery Planning
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-8-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 8: Security
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 8: Security">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#security-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Best Practices
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#securing-people" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Securing People
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#securing-machine-access-service-accounts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Securing Machine Access (Service Accounts)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Security
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#encryption" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Encryption
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-9-maintenance-and-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 9: Maintenance and Monitoring
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 9: Maintenance and Monitoring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deployment-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment Strategies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cost-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cost Optimization
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scenario-breakdowns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Scenario Breakdowns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Scenario Breakdowns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-designing-for-high-availability-multi-tier-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario: Designing for High Availability (Multi-tier App)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-disaster-recovery-decision-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario: Disaster Recovery Decision Matrix
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-choosing-load-balancers-for-a-travel-portal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario: Choosing Load Balancers for a Travel Portal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-security-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scenario: Security Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-exam-tips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔑 Key Exam Tips
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="reliable-cloud-infrastructure-design-and-process">🏗️ Reliable Cloud Infrastructure — Design and Process</h1>
+<blockquote>
+<p><strong>GCP Professional Cloud Architect Notes</strong>
+Source: <em>Reliable Cloud Infrastructure: Design and Process — 9 Modules (313 pages)</em></p>
+</blockquote>
+<hr />
+<h2 id="module-1-defining-services">Module 1: Defining Services</h2>
+<h3 id="requirements-framework">Requirements Framework</h3>
+<p><strong>Qualitative requirements</strong> — define systems from the user's point of view using: <strong>Who / What / Why / When / How</strong></p>
+<h4 id="roles-personas-user-stories">Roles → Personas → User Stories</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Role (goal of a user at a point in time)
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a> └── Persona (imaginary representation of a role — gives human context)
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>       └── User Story (one thing the user wants the system to do)
+</code></pre></div>
+<ul>
+<li><strong>Roles</strong> describe objectives, not people or job titles. Everyone is a user — "user" is not a good role.</li>
+<li><strong>Personas</strong> tell a story; they help architects think about edge cases and UX details.</li>
+<li><strong>User story template:</strong> <code>As a [role], I want to [action], so that I can [benefit].</code></li>
+</ul>
+<p><strong>INVEST criteria for good user stories:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Letter</th>
+<th>Criterion</th>
+<th>Why It Matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>I</strong></td>
+<td>Independent</td>
+<td>Prevents prioritization conflicts</td>
+</tr>
+<tr>
+<td><strong>N</strong></td>
+<td>Negotiable</td>
+<td>Promotes collaboration, not a contract</td>
+</tr>
+<tr>
+<td><strong>V</strong></td>
+<td>Valuable</td>
+<td>Focus on outcomes, not deliverables</td>
+</tr>
+<tr>
+<td><strong>E</strong></td>
+<td>Estimatable</td>
+<td>If not, story is too large or missing details</td>
+</tr>
+<tr>
+<td><strong>S</strong></td>
+<td>Small</td>
+<td>Keeps scope tight; enables fast feedback</td>
+</tr>
+<tr>
+<td><strong>T</strong></td>
+<td>Testable</td>
+<td>Developers can verify it's done</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="kpis-and-smart-criteria">KPIs and SMART Criteria</h3>
+<p><strong>KPIs measure whether you're on track toward a goal</strong> — they are not the goal itself.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Business KPIs</td>
+<td>ROI, EBIT, employee turnover, customer churn</td>
+</tr>
+<tr>
+<td>Technical KPIs</td>
+<td>Page views, user registrations, clickthroughs, checkouts</td>
+</tr>
+</tbody>
+</table>
+<p><strong>SMART criteria for KPIs and SLOs:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Letter</th>
+<th>Meaning</th>
+<th>Anti-example → Better</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>S</strong></td>
+<td>Specific</td>
+<td>"User friendly" → "Section 508 accessible"</td>
+</tr>
+<tr>
+<td><strong>M</strong></td>
+<td>Measurable</td>
+<td>"Fast" → "HTTP GET &lt; 400ms aggregated per minute"</td>
+</tr>
+<tr>
+<td><strong>A</strong></td>
+<td>Achievable</td>
+<td>"100% availability" → "99.9% availability"</td>
+</tr>
+<tr>
+<td><strong>R</strong></td>
+<td>Relevant</td>
+<td>Does it matter to the user?</td>
+</tr>
+<tr>
+<td><strong>T</strong></td>
+<td>Time-bound</td>
+<td>"99% available" — per year? per month?</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="sli-slo-sla-hierarchy">SLI → SLO → SLA Hierarchy</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>SLI (what you measure — a KPI)
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a> └── SLO (target: e.g. 99.9% availability — stricter than SLA)
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>       └── SLA (customer contract — lower threshold, penalties if breached)
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SLI</strong></td>
+<td>Quantifiable, time-bound measurement</td>
+<td><code>% successful HTTP requests per minute</code></td>
+</tr>
+<tr>
+<td><strong>SLO</strong></td>
+<td>SLI + target; must be SMART</td>
+<td><code>99% of HTTP GETs complete in &lt; 100ms</code></td>
+</tr>
+<tr>
+<td><strong>SLA</strong></td>
+<td>Business contract with penalties</td>
+<td><code>Error rate &lt; 0.3%</code>; compensation if breached</td>
+</tr>
+</tbody>
+</table>
+<p><strong>SLO tips:</strong>
+- Goal is to keep users happy, <strong>not</strong> to maximize the SLO number
+- Higher SLO → higher compute redundancy + operations cost
+- Don't significantly outperform SLOs — users come to expect it
+- SLO threshold must always be <strong>stricter</strong> than the SLA
+- Not every service needs an SLA, but <strong>every service needs an SLO</strong></p>
+<p><strong>Latency SLO example (multiple percentiles):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>90% of HTTP GET calls complete in &lt; 50ms
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>99% of HTTP GET calls complete in &lt; 100ms
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>99.9% of HTTP GET calls complete in &lt; 500ms
+</code></pre></div></p>
+<p><strong>Common pitfall:</strong> Inconsistent SLI measurement (e.g., SLO based on average latency but SLA on p99) can make the SRE team think the SLO is met while the SLA is being violated. Always align metrics, measurement windows, and scope across SLI/SLO/SLA.</p>
+<hr />
+<h2 id="module-2-microservice-design-and-architecture">Module 2: Microservice Design and Architecture</h2>
+<h3 id="monolith-vs-microservices">Monolith vs. Microservices</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Monolithic</th>
+<th>Microservices</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Codebase</strong></td>
+<td>Single codebase, single database</td>
+<td>Multiple codebases, each manages own data</td>
+</tr>
+<tr>
+<td><strong>Deployment</strong></td>
+<td>Deploy everything together</td>
+<td>Deploy services independently</td>
+</tr>
+<tr>
+<td><strong>Scaling</strong></td>
+<td>Scale entire app</td>
+<td>Scale services independently</td>
+</tr>
+<tr>
+<td><strong>Failure</strong></td>
+<td>One failure can affect everything</td>
+<td>Isolated failure domains</td>
+</tr>
+<tr>
+<td><strong>Complexity</strong></td>
+<td>Low initially</td>
+<td>Higher — distributed system challenges</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pros of microservices:</strong> Easier to develop/maintain, reduced deployment risk, independent scaling, faster innovation, mix languages/frameworks, fine-grained cost accounting.</p>
+<p><strong>Cons:</strong> Inter-service communication complexity, increased latency at boundaries, securing inter-service traffic, multiple deployments, must maintain backward compatibility.</p>
+<hr />
+<h3 id="decomposing-applications">Decomposing Applications</h3>
+<p>Three strategies for identifying microservice boundaries:</p>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>By feature</strong></td>
+<td>Reviews service, Orders service, Products service</td>
+</tr>
+<tr>
+<td><strong>By architectural layer</strong></td>
+<td>Web UI, Data access services, Android/iOS</td>
+</tr>
+<tr>
+<td><strong>By shared functionality</strong></td>
+<td>Auth service, Reporting service</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="stateful-vs-stateless-services">Stateful vs. Stateless Services</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Stateless</th>
+<th>Stateful</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Scaling</strong></td>
+<td>Easy — add instances</td>
+<td>Hard — need sticky sessions</td>
+</tr>
+<tr>
+<td><strong>Upgrades</strong></td>
+<td>Easy</td>
+<td>Harder</td>
+</tr>
+<tr>
+<td><strong>Backup</strong></td>
+<td>Not needed</td>
+<td>Required</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Best practice:</strong> Store state in backend storage services shared by stateless frontends:
+- Persistent state: Firestore, Cloud SQL
+- Caching: Memorystore for Redis</p>
+<p><strong>Architecture pattern:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Internet → Cloud DNS → Application LB (global)
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>           → Stateless Frontend Servers
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>           → Internal LB
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>           → Stateless Backend Servers
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>           → Stateful Data Layer (isolated)
+</code></pre></div></p>
+<p><strong>Avoid:</strong> Storing shared state in-memory on servers (requires sticky sessions / session affinity; blocks autoscaling).</p>
+<hr />
+<h3 id="the-12-factor-app">The 12-Factor App</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Factor</th>
+<th>Key Principle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Codebase</strong></td>
+<td>One repo per service, tracked in version control (Git)</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Dependencies</strong></td>
+<td>Explicitly declare + isolate (Maven, Pip, NPM); package in container</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Config</strong></td>
+<td>Store secrets/endpoints in environment variables, not source code</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Backing services</strong></td>
+<td>Databases, caches, queues accessed via URLs; easy to swap</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Build, release, run</strong></td>
+<td>Strictly separate: Build → Release (build + config) → Run</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Processes</strong></td>
+<td>Stateless processes; state stored in backing service</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Port binding</strong></td>
+<td>App is self-contained and exports a port + protocol</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Concurrency</strong></td>
+<td>Scale out via the process model (add instances)</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>Disposability</strong></td>
+<td>Fast startup, graceful shutdown; fault-tolerant</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>Dev/prod parity</strong></td>
+<td>Keep dev, staging, prod as similar as possible (Docker + IaC)</td>
+</tr>
+<tr>
+<td>11</td>
+<td><strong>Logs</strong></td>
+<td>Treat logs as event streams; write to stdout; aggregate centrally</td>
+</tr>
+<tr>
+<td>12</td>
+<td><strong>Admin processes</strong></td>
+<td>One-off admin tasks should be automated, decoupled from app</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="rest-architecture">REST Architecture</h3>
+<p><strong>REST</strong> (Representational State Transfer) — protocol-independent (HTTP most common, gRPC also used).</p>
+<table>
+<thead>
+<tr>
+<th>HTTP Verb</th>
+<th>Purpose</th>
+<th>Idempotent?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td>Retrieve data</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td>Create new resource (server generates ID)</td>
+<td>❌ No</td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td>Create or update resource (client specifies ID)</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td>Remove resource</td>
+<td>✅ Yes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>HTTP Response codes:</strong>
+- <code>2xx</code> = Success (200 OK, 201 Created)
+- <code>4xx</code> = Client error (400 Bad Request, 403 Forbidden, 404 Not Found)
+- <code>5xx</code> = Server error</p>
+<p><strong>URI design rules:</strong>
+- Plural nouns for collections: <code>GET /pets</code>
+- Singular nouns for items: <code>GET /pet/1</code>
+- Don't use verbs: ❌ <code>GET /getPets</code> → ✅ <code>GET /pets</code>
+- Include version: <code>GET /v1/pets</code>
+- URIs are case-insensitive</p>
+<hr />
+<h3 id="api-management-tools">API Management Tools</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cloud Endpoints</strong></td>
+<td>GCP backends; lightweight API gateway; OpenAPI + gRPC</td>
+</tr>
+<tr>
+<td><strong>Apigee</strong></td>
+<td>Enterprise API management; on-prem/cloud/hybrid; monetization; analytics</td>
+</tr>
+<tr>
+<td><strong>API Gateway</strong></td>
+<td>Secure, consistent REST API across multiple backends</td>
+</tr>
+</tbody>
+</table>
+<p><strong>OpenAPI</strong> — industry standard for REST API specification (based on Swagger 2.0); language-independent; auto-generates client libraries and documentation.</p>
+<p><strong>gRPC</strong> — binary protocol by Google; fast; HTTP/2; supports streaming; ideal for internal service-to-service communication; supported by Application LB + Cloud Endpoints + GKE (via Envoy proxy).</p>
+<hr />
+<h2 id="module-3-devops-automation">Module 3: DevOps Automation</h2>
+<h3 id="cicd-pipeline-components">CI/CD Pipeline Components</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Code commit → Unit tests → Build Docker image → Push to Artifact Registry → Deploy
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>GCP Service</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cloud Source Repositories</strong></td>
+<td>Managed private Git repos; IAM-integrated; connects to GitHub/Bitbucket</td>
+</tr>
+<tr>
+<td><strong>Cloud Build</strong></td>
+<td>Managed build service; steps defined in <code>cloudbuild.yaml</code> or Dockerfile; no infra to manage</td>
+</tr>
+<tr>
+<td><strong>Build Triggers</strong></td>
+<td>Watches repo; auto-starts build on branch/tag push; supports regex matching</td>
+</tr>
+<tr>
+<td><strong>Artifact Registry</strong></td>
+<td>Universal package manager; Docker, Maven, npm, PyPI; IAM-integrated</td>
+</tr>
+<tr>
+<td><strong>Binary Authorization</strong></td>
+<td>Enforce only trusted/attested images are deployed to GKE; uses Kritis spec</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cloud Build key points:</strong>
+- Builders = Docker containers with language tools installed
+- Steps can run unit tests, linting, integration tests, image scanning
+- <code>gcloud builds submit --tag gcr.io/PROJECT/image</code></p>
+<p><strong>Binary Authorization workflow:</strong>
+1. Enable Binary Authorization on GKE cluster
+2. Add policy requiring signed images
+3. Cloud Build uses an "attestor" to verify image source
+4. Artifact Registry vulnerability scanner scans containers
+5. Kritis Signer creates attestation
+6. Unsigned images are blocked at deploy time</p>
+<hr />
+<h3 id="iac-mindset-cloud-vs-on-premises">IaC Mindset: Cloud vs. On-Premises</h3>
+<table>
+<thead>
+<tr>
+<th>On-Premises</th>
+<th>Cloud</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Buy machines</td>
+<td>Rent machines</td>
+</tr>
+<tr>
+<td>Keep machines running for years</td>
+<td>Turn off ASAP</td>
+</tr>
+<tr>
+<td>Fewer big machines (scale up)</td>
+<td>Many small machines (scale out)</td>
+</tr>
+<tr>
+<td>Capital expenditure</td>
+<td>Monthly operating expense</td>
+</tr>
+</tbody>
+</table>
+<p><strong>In the cloud: treat all infrastructure as disposable.</strong> Never fix broken machines — delete and recreate. Use IaC to automate everything.</p>
+<p><strong>IaC tools:</strong> Terraform (primary focus), Ansible, Chef, Puppet, Packer.</p>
+<p><strong>Terraform benefits:</strong> Repeatable, declarative, parallel deployment, template-driven, multi-cloud.</p>
+<hr />
+<h2 id="module-4-choosing-storage-and-data-solutions">Module 4: Choosing Storage and Data Solutions</h2>
+<h3 id="storage-portfolio-overview">Storage Portfolio Overview</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Type</th>
+<th>Schema</th>
+<th>Scales</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cloud SQL</strong></td>
+<td>Relational</td>
+<td>Fixed</td>
+<td>Vertically (64 TB)</td>
+<td>MySQL, PostgreSQL, SQL Server; web frameworks, CMS, eCommerce</td>
+</tr>
+<tr>
+<td><strong>Spanner</strong></td>
+<td>Relational</td>
+<td>Fixed</td>
+<td>Horizontally (infinite)</td>
+<td>Global scale, strong consistency, ACID, financial</td>
+</tr>
+<tr>
+<td><strong>AlloyDB</strong></td>
+<td>Relational</td>
+<td>Fixed</td>
+<td>Regional/multi-regional</td>
+<td>RDBMS + scale, HTAP (transactional + analytical)</td>
+</tr>
+<tr>
+<td><strong>Firestore</strong></td>
+<td>NoSQL document</td>
+<td>Schemaless</td>
+<td>Auto, infinite</td>
+<td>Hierarchical data, mobile/web, user profiles, game state</td>
+</tr>
+<tr>
+<td><strong>Bigtable</strong></td>
+<td>NoSQL wide-column</td>
+<td>Schemaless</td>
+<td>Horizontally</td>
+<td>Heavy read/write, IoT, AdTech, financial streams</td>
+</tr>
+<tr>
+<td><strong>Cloud Storage</strong></td>
+<td>Object</td>
+<td>Schemaless</td>
+<td>Auto, infinite</td>
+<td>Binary data, images, media, backups</td>
+</tr>
+<tr>
+<td><strong>Persistent Disk</strong></td>
+<td>Block</td>
+<td>Schemaless</td>
+<td>Fixed size</td>
+<td>VM block storage, high-performance disk</td>
+</tr>
+<tr>
+<td><strong>BigQuery</strong></td>
+<td>Data warehouse</td>
+<td>Fixed</td>
+<td>Auto, infinite</td>
+<td>SQL analytics, BI dashboards, reporting</td>
+</tr>
+<tr>
+<td><strong>Memorystore</strong></td>
+<td>In-memory</td>
+<td>Schemaless</td>
+<td>Vertically</td>
+<td>Caching, session state, game state (Redis)</td>
+</tr>
+<tr>
+<td><strong>Filestore</strong></td>
+<td>File (NAS)</td>
+<td>Fixed</td>
+<td>Configurable</td>
+<td>Shared file system, ML, Generative AI workloads</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="key-storage-selection-criteria">Key Storage Selection Criteria</h3>
+<h4 id="availability-slas">Availability SLAs</h4>
+<table>
+<thead>
+<tr>
+<th>Service + Config</th>
+<th>Availability SLA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cloud Storage multi-region</td>
+<td>≥99.95%</td>
+</tr>
+<tr>
+<td>Cloud Storage regional</td>
+<td>99.9%</td>
+</tr>
+<tr>
+<td>Cloud Storage coldline</td>
+<td>99.0%</td>
+</tr>
+<tr>
+<td>Spanner multi-region</td>
+<td>99.999%</td>
+</tr>
+<tr>
+<td>Spanner single-region</td>
+<td>99.99%</td>
+</tr>
+<tr>
+<td>Firestore multi-region</td>
+<td>99.999%</td>
+</tr>
+<tr>
+<td>Firestore single-region</td>
+<td>99.99%</td>
+</tr>
+</tbody>
+</table>
+<h4 id="consistency-model">Consistency Model</h4>
+<table>
+<thead>
+<tr>
+<th>Strongly Consistent</th>
+<th>Eventually Consistent (default)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cloud Storage, Cloud SQL, Spanner, Firestore</td>
+<td>Bigtable (with replication), Memorystore replicas</td>
+</tr>
+<tr>
+<td>Bigtable (no replication)</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h4 id="scaling-model">Scaling Model</h4>
+<table>
+<thead>
+<tr>
+<th>Horizontal (add nodes)</th>
+<th>Vertical (bigger machines)</th>
+<th>Automatic / Unlimited</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bigtable, Spanner, Firestore</td>
+<td>Cloud SQL, Memorystore</td>
+<td>Cloud Storage, BigQuery</td>
+</tr>
+</tbody>
+</table>
+<h4 id="durability-shared-responsibility">Durability (Shared Responsibility)</h4>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Google Provides</th>
+<th>Your Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cloud Storage</td>
+<td>11 9's durability</td>
+<td>Enable versioning; lifecycle policy</td>
+</tr>
+<tr>
+<td>Persistent Disk</td>
+<td>Snapshots</td>
+<td>Schedule snapshot jobs</td>
+</tr>
+<tr>
+<td>Cloud SQL</td>
+<td>Automated backups, PITR</td>
+<td>Create backups; failover replica</td>
+</tr>
+<tr>
+<td>Spanner</td>
+<td>Auto replication</td>
+<td>Run export jobs</td>
+</tr>
+<tr>
+<td>Firestore</td>
+<td>Auto replication</td>
+<td>Run export jobs</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="storage-decision-chart">Storage Decision Chart</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Start → Is data structured?
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  NO  → Need shared file system? → YES → Filestore
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>                                   NO  → Cloud Storage (object)
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  YES → Workload involves analytics?
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    YES → Need extensive updates/low latency? → YES → Bigtable
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>                                                NO  → BigQuery (data warehouse)
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    NO  → Data relational?
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>      YES → Need HTAP? → YES → AlloyDB
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>                         NO  → Need global scale? → YES → Spanner
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>                                                    NO  → Cloud SQL
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>      NO  → Need application caching? → YES → Memorystore
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>                                         NO  → Firestore (document)
+</code></pre></div>
+<hr />
+<h3 id="data-transfer-options">Data Transfer Options</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Best For</th>
+<th>Key Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cloud Storage Transfer Service</strong></td>
+<td>Online transfers, scheduled uploads</td>
+<td>From S3, HTTP/HTTPS, or GCS→GCS; one-time or recurring</td>
+</tr>
+<tr>
+<td><strong>Storage Transfer Service (on-prem)</strong></td>
+<td>Large-scale on-prem uploads</td>
+<td>Docker agent; 300 Mbps minimum; scales to 100s TB</td>
+</tr>
+<tr>
+<td><strong>Transfer Appliance</strong></td>
+<td>Massive datasets too large to upload</td>
+<td>Physical rackable device; up to 1 PB; customer holds encryption key</td>
+</tr>
+<tr>
+<td><strong>BigQuery Data Transfer Service</strong></td>
+<td>SaaS → BigQuery</td>
+<td>Google Ads, YouTube, Teradata, Amazon Redshift, S3</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="module-5-network-architecture">Module 5: Network Architecture</h2>
+<h3 id="vpc-design-principles">VPC Design Principles</h3>
+<ul>
+<li><strong>VPCs are global</strong> — subnets are regional</li>
+<li>Resources across regions communicate via internal IPs (no added interconnect)</li>
+<li>Custom subnets: specify region + CIDR range; non-overlapping; expandable without downtime</li>
+<li>One VM can have up to <strong>8 network interfaces</strong>, each in a different VPC</li>
+<li><strong>Shared VPC:</strong> Host project owns VPC; service projects use it. Centralizes network admin; developers focus on workloads.</li>
+</ul>
+<hr />
+<h3 id="load-balancer-selection">Load Balancer Selection</h3>
+<table>
+<thead>
+<tr>
+<th>Balancer Type</th>
+<th>Layer</th>
+<th>Traffic</th>
+<th>Scope</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Global External Application LB</strong></td>
+<td>L7</td>
+<td>HTTP(S)</td>
+<td>Global</td>
+<td>Public-facing; multi-region; SSL termination; content routing</td>
+</tr>
+<tr>
+<td><strong>Regional External Application LB</strong></td>
+<td>L7</td>
+<td>HTTP(S)</td>
+<td>Regional</td>
+<td>Regional public traffic</td>
+</tr>
+<tr>
+<td><strong>Regional Internal Application LB</strong></td>
+<td>L7</td>
+<td>HTTP(S)</td>
+<td>Regional</td>
+<td>Internal HTTP microservices</td>
+</tr>
+<tr>
+<td><strong>External Proxy Network LB</strong></td>
+<td>L4</td>
+<td>TCP/SSL</td>
+<td>Global/Regional</td>
+<td>TLS offload; multi-region backends</td>
+</tr>
+<tr>
+<td><strong>Internal Proxy Network LB</strong></td>
+<td>L4</td>
+<td>TCP</td>
+<td>Regional</td>
+<td>Internal TCP services</td>
+</tr>
+<tr>
+<td><strong>External Passthrough Network LB</strong></td>
+<td>L4</td>
+<td>TCP/UDP</td>
+<td>Regional</td>
+<td>Preserve client IP; low latency</td>
+</tr>
+<tr>
+<td><strong>Internal Passthrough Network LB</strong></td>
+<td>L4</td>
+<td>TCP/UDP</td>
+<td>Regional</td>
+<td>Internal high-throughput services</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Quick rule:</strong> HTTP(S) public → Application LB; TLS offload/TCP proxy → Proxy Network LB; Preserve client IP → Passthrough LB.</p>
+<p><strong>Cloud CDN:</strong> Enable on Global External Application LB; caches static content at edge; reduces latency + egress costs; protects backend from DDoS (cache hits absorb attacks).</p>
+<hr />
+<h3 id="network-connectivity-options">Network Connectivity Options</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>When to Use</th>
+<th>SLA</th>
+<th>Bandwidth</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>VPC Peering</strong></td>
+<td>Connect two GCP VPCs (same or diff org); private RFC 1918</td>
+<td>—</td>
+<td>Up to VPC limits</td>
+</tr>
+<tr>
+<td><strong>Classic VPN</strong></td>
+<td>Low-volume encrypted on-prem connection; static or dynamic routes</td>
+<td>99.9%</td>
+<td>Up to ~3 Gbps; MTU ≤ 1460</td>
+</tr>
+<tr>
+<td><strong>HA VPN</strong></td>
+<td>High-availability encrypted connection; requires BGP/Cloud Router</td>
+<td>99.99%</td>
+<td>2+ tunnels; 2 external IPs</td>
+</tr>
+<tr>
+<td><strong>Dedicated Interconnect</strong></td>
+<td>High-speed direct physical connection; colocation required</td>
+<td>99.99%</td>
+<td>10–200 Gbps</td>
+</tr>
+<tr>
+<td><strong>Partner Interconnect</strong></td>
+<td>No colocation; through service provider</td>
+<td>99.99%</td>
+<td>50 Mbps–10 Gbps</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cloud Router:</strong> Enables dynamic route exchange via BGP; required for HA VPN and dynamic routing with Cloud Interconnect. Routes update without changing tunnel configuration.</p>
+<p><strong>HA VPN topologies:</strong>
+1. HA VPN → peer VPN devices (2 tunnels for 99.99%)
+2. HA VPN → AWS (requires Transit Gateway or VGW; 4 external IPs)
+3. Two HA VPN gateways connected (GCP-to-GCP cross-VPC with 99.99%)</p>
+<hr />
+<h2 id="module-6-deploying-applications-to-google-cloud">Module 6: Deploying Applications to Google Cloud</h2>
+<h3 id="compute-platform-selection">Compute Platform Selection</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Start
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>↓
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>Need OS-level control, custom images, or lift-and-shift? → Compute Engine
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>↓
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>Need container orchestration with persistent workloads?  → GKE
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>↓
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>Need stateless containers, event-driven, scale to zero?  → Cloud Run
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>↓
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>Need event-triggered, single-purpose functions?          → Cloud Run Functions
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>↓
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>Need managed platform, focus only on code?               → App Engine
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Key Characteristics</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Compute Engine</strong></td>
+<td>Full OS control; MIGs for HA + autoscaling; health checks + autohealing</td>
+</tr>
+<tr>
+<td><strong>GKE</strong></td>
+<td>Container orchestration; Autopilot (managed) or Standard; multi-zone clusters</td>
+</tr>
+<tr>
+<td><strong>Cloud Run</strong></td>
+<td>Stateless containers; HTTP/Pub/Sub triggers; scale to zero; no infra</td>
+</tr>
+<tr>
+<td><strong>Cloud Run Functions</strong></td>
+<td>Event-driven; single-purpose; loosely coupled microservices</td>
+</tr>
+<tr>
+<td><strong>App Engine</strong></td>
+<td>Managed PaaS; automatic rolling updates + traffic splitting built-in</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="module-7-designing-reliable-systems">Module 7: Designing Reliable Systems</h2>
+<h3 id="key-performance-metrics">Key Performance Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Definition</th>
+<th>How to Achieve</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Availability</strong></td>
+<td>% time system is running + processing requests</td>
+<td>Fault tolerance, health checks, multi-zone</td>
+</tr>
+<tr>
+<td><strong>Durability</strong></td>
+<td>Odds of NOT losing data due to hardware/software failure</td>
+<td>Replication, regular backups, restore drills</td>
+</tr>
+<tr>
+<td><strong>Scalability</strong></td>
+<td>Ability to handle growing load + data</td>
+<td>Monitor usage; auto-scaling; capacity planning</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="failure-modes-and-mitigations">Failure Modes and Mitigations</h3>
+<h4 id="1-single-points-of-failure-n2-redundancy">1. Single Points of Failure → N+2 Redundancy</h4>
+<ul>
+<li>Deploy <strong>N+2</strong> units: one for maintenance/upgrade + one for unexpected failure</li>
+<li>Deploy across <strong>multiple zones</strong> (different failure domains)</li>
+<li>Make units interchangeable stateless clones</li>
+</ul>
+<h4 id="2-correlated-failures-distribute-across-failure-domains">2. Correlated Failures → Distribute Across Failure Domains</h4>
+<ul>
+<li>Failure domain = group of related items that fail together</li>
+<li>Causes: shared hardware (rack switch), shared region/zone, same software bug, shared config system</li>
+<li>Mitigations:</li>
+<li>Divide business logic by failure domain</li>
+<li>Deploy to multiple zones and/or regions</li>
+<li>Split responsibilities across independent processes</li>
+<li>Loosely coupled services (failure in one ≠ failure in collaborating service)</li>
+</ul>
+<h4 id="3-cascading-failures-health-checks-autoscaling">3. Cascading Failures → Health Checks + Autoscaling</h4>
+<ul>
+<li>Cause: one server fails → remaining servers overloaded → they fail too</li>
+<li>Mitigations:</li>
+<li>Health checks (Compute Engine) or readiness/liveness probes (GKE)</li>
+<li>Ensure new instances start fast and don't depend on other backends to start</li>
+<li>Adequate spare capacity (N+2 rule)</li>
+</ul>
+<h4 id="4-query-of-death-monitoring-developer-feedback">4. Query of Death → Monitoring + Developer Feedback</h4>
+<ul>
+<li>Business logic error manifests as resource overconsumption → service overload</li>
+<li>Mitigation: Monitor latency, resource utilization, and error rates; route alerts to developers</li>
+</ul>
+<h4 id="5-positive-feedback-cycle-retry-storm-exponential-backoff-circuit-breaker">5. Positive Feedback Cycle (Retry Storm) → Exponential Backoff + Circuit Breaker</h4>
+<p><strong>Truncated Exponential Backoff:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Request fails → wait 1s + random_ms → retry
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Request fails → wait 2s + random_ms → retry
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>Request fails → wait 4s + random_ms → retry
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>... up to max_backoff and max_retries
+</code></pre></div></p>
+<p><strong>Circuit Breaker:</strong>
+- Proxy monitors service health
+- If unhealthy → stop forwarding requests (protect service from retry storm)
+- When healthy → resume forwarding gradually
+- GKE: use <strong>Istio</strong> service mesh (automatic circuit breakers)</p>
+<h4 id="6-accidental-deletion-lazy-deletion">6. Accidental Deletion → Lazy Deletion</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>User deletes → [Soft delete / Trash] (≤ 30 days, user can restore)
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>            → [Soft delete backend] (≤ 60 days, support can restore)
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>            → [Hard delete / Purge] (only backup recovery remains)
+</code></pre></div>
+<hr />
+<h3 id="high-availability-by-service">High Availability by Service</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>HA Strategy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Compute Engine</strong></td>
+<td>Regional managed instance group (distributes across zones) + auto-healing health check</td>
+</tr>
+<tr>
+<td><strong>GKE</strong></td>
+<td>Regional cluster (replicates control plane + node pools across zones)</td>
+</tr>
+<tr>
+<td><strong>Cloud SQL</strong></td>
+<td>Failover replica in another zone (same region); doubles cost; auto-failover</td>
+</tr>
+<tr>
+<td><strong>Spanner</strong></td>
+<td>Multi-region deployment (99.999% SLA; &lt; 6 min/year downtime)</td>
+</tr>
+<tr>
+<td><strong>Firestore</strong></td>
+<td>Multi-region deployment (99.999% SLA)</td>
+</tr>
+<tr>
+<td><strong>Cloud Storage</strong></td>
+<td>Multi-region bucket (99.95% SLA vs 99.9% for single-region)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cost vs. Availability trade-off table:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Deployment</th>
+<th>Availability</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Single zone</td>
+<td>Lowest</td>
+<td>Lowest</td>
+</tr>
+<tr>
+<td>Multiple zones in a region</td>
+<td>Medium</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Multiple regions</td>
+<td>Highest</td>
+<td>Highest</td>
+</tr>
+</tbody>
+</table>
+<p>Always compare: <strong>cost of deployment</strong> vs. <strong>cost of being down</strong>.</p>
+<hr />
+<h3 id="disaster-recovery-planning">Disaster Recovery Planning</h3>
+<p><strong>Two key metrics:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RPO</strong> (Recovery Point Objective)</td>
+<td>Maximum acceptable data loss (e.g., 0 = no data loss, 24h = daily backup is ok)</td>
+</tr>
+<tr>
+<td><strong>RTO</strong> (Recovery Time Objective)</td>
+<td>Maximum acceptable downtime (e.g., 1 minute = near-instant failover required)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DR Strategies:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Mechanism</th>
+<th>Cost</th>
+<th>RTO</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cold standby</strong></td>
+<td>Snapshots + machine images in multi-region storage; spin up when needed</td>
+<td>Low</td>
+<td>Minutes to hours</td>
+</tr>
+<tr>
+<td><strong>Hot standby</strong></td>
+<td>Instance groups in multiple regions; global load balancer active; multi-region databases</td>
+<td>High</td>
+<td>Near-zero</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DR Planning process:</strong>
+1. <strong>Brainstorm</strong> scenarios (hardware failure, accidental deletion, region outage, software bug)
+2. <strong>Define</strong> RPO + RTO per scenario
+3. <strong>Prioritize</strong> by impact and likelihood
+4. <strong>Document</strong> backup strategy + recovery procedure
+5. <strong>Test with drills</strong> — at least annually; ideally part of daily operations</p>
+<hr />
+<h2 id="module-8-security">Module 8: Security</h2>
+<h3 id="security-best-practices">Security Best Practices</h3>
+<table>
+<thead>
+<tr>
+<th>Principle</th>
+<th>Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Principle of least privilege</strong></td>
+<td>Grant minimal permissions via IAM roles; applies to users AND service accounts</td>
+</tr>
+<tr>
+<td><strong>Separation of duties</strong></td>
+<td>No single person can change/delete/steal data undetected; use multiple projects + folders</td>
+</tr>
+<tr>
+<td><strong>Defense in depth</strong></td>
+<td>Security at every layer: hardware → boot → OS → IPC → storage → app → deployment → operations</td>
+</tr>
+<tr>
+<td><strong>Regular audits</strong></td>
+<td>Review admin logs, data access logs, VPC flow logs, firewall logs, system logs</td>
+</tr>
+<tr>
+<td><strong>Shared responsibility</strong></td>
+<td>Google secures infrastructure layers; you secure your application + config + IAM</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="securing-people">Securing People</h3>
+<p><strong>IAM Best Practices:</strong>
+- Grant roles to <strong>Groups</strong>, not individuals — simpler management, consistent permissions
+- Use <strong>predefined roles</strong> over custom roles (Google designed them correctly)
+- Grant roles at the <strong>smallest scope needed</strong> (project &gt; folder &gt; org)
+- <strong>Limit Owner/Editor</strong> roles — prefer more specific roles
+- Consider <strong>policy inheritance</strong> when assigning roles (org → folder → project → resource)</p>
+<p><strong>Key authentication services:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IAM</strong></td>
+<td>Authenticate + authorize GCP users and resources</td>
+</tr>
+<tr>
+<td><strong>Identity-Aware Proxy (IAP)</strong></td>
+<td>App-level access control without VPN; works with App Engine, GKE, Compute Engine behind ALB</td>
+</tr>
+<tr>
+<td><strong>Identity Platform</strong></td>
+<td>Customer-facing auth (CIAM); supports SAML, OpenID, OAuth, email/password, social, phone</td>
+</tr>
+<tr>
+<td><strong>Cloud Identity</strong></td>
+<td>Manage users and groups; GCDS for on-prem sync</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="securing-machine-access-service-accounts">Securing Machine Access (Service Accounts)</h3>
+<ul>
+<li>Service account = identity for a VM, container, or application (not a human)</li>
+<li>Create service account → assign IAM roles → attach to VM/GKE node pool</li>
+<li>Two key types of service account keys:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Managed By</th>
+<th>Storage</th>
+<th>Rotation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Google-managed</strong></td>
+<td>Google</td>
+<td>Cloud; never exposed</td>
+<td>Automatic (≤ 2 weeks)</td>
+</tr>
+<tr>
+<td><strong>User-managed</strong></td>
+<td>You</td>
+<td>JSON file you download</td>
+<td>Manual; up to 10 per SA</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ User-managed keys are <strong>extremely powerful credentials</strong> — security risk if mismanaged. Apply <code>constraints/iam.disableServiceAccountKeyCreation</code> org policy where possible.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Use service account key in CLI</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>gcloud<span class="w"> </span>auth<span class="w"> </span>activate-service-account<span class="w"> </span>--key-file<span class="o">=[</span>PATH<span class="w"> </span>TO<span class="w"> </span>KEY<span class="w"> </span>FILE<span class="o">]</span>
+</code></pre></div>
+<hr />
+<h3 id="network-security">Network Security</h3>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Remove external IPs</strong></td>
+<td>Prevent direct internet access to VMs; use bastion host or IAP for admin</td>
+</tr>
+<tr>
+<td><strong>Private Google Access</strong></td>
+<td>VMs with only internal IPs can still reach GCP services (Cloud Storage, etc.)</td>
+</tr>
+<tr>
+<td><strong>Firewall rules</strong></td>
+<td>Default: deny all ingress; explicitly allow required traffic by port/protocol/source</td>
+</tr>
+<tr>
+<td><strong>Cloud Endpoints</strong></td>
+<td>API management; JWT validation; rate limiting; integrates with Identity Platform</td>
+</tr>
+<tr>
+<td><strong>TLS only</strong></td>
+<td>Use HTTPS frontends on all load balancers; never HTTP</td>
+</tr>
+<tr>
+<td><strong>Cloud CDN</strong></td>
+<td>L3/L4 DDoS protection via cache hits absorbing attack traffic</td>
+</tr>
+<tr>
+<td><strong>Cloud Armor</strong></td>
+<td>L7 WAF; allow/deny by IP, geo, headers, cookies; SQL injection/XSS protection</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cloud Armor WAF rule examples:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>inIpRange(origin.ip, &#39;9.9.9.0/24&#39;)
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>request.headers[&#39;cookie&#39;].contains(&#39;80=BLAH&#39;)
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>origin.region_code == &#39;AU&#39;
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>evaluatePreconfiguredExpr(&#39;xss-canary&#39;)
+</code></pre></div></p>
+<hr />
+<h3 id="encryption">Encryption</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Key Management</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Google-managed (default)</strong></td>
+<td>Google manages; AES-256; auto-rotation</td>
+<td>Default for all GCP data at rest</td>
+</tr>
+<tr>
+<td><strong>CMEK (Customer-Managed)</strong></td>
+<td>Keys in Cloud KMS; you set rotation frequency</td>
+<td>Compliance requirements</td>
+</tr>
+<tr>
+<td><strong>CSEK (Customer-Supplied)</strong></td>
+<td>Keys on-prem; supplied per API call; only in RAM at Google</td>
+<td>Maximum key control; Compute Engine + Cloud Storage</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Encryption stack:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Data → encrypted with DEK (AES-256)
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>DEK  → encrypted with KEK (stored in Cloud KMS)
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>KEK  → periodically auto-rotated
+</code></pre></div></p>
+<p><strong>Data Loss Prevention (DLP) API:</strong>
+- Scans Cloud Storage, BigQuery, Firestore + images
+- Detects: emails, credit cards, SSNs, phone numbers, passport numbers, etc.
+- Actions: identify, mask, tokenize, delete</p>
+<hr />
+<h2 id="module-9-maintenance-and-monitoring">Module 9: Maintenance and Monitoring</h2>
+<h3 id="deployment-strategies">Deployment Strategies</h3>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>How It Works</th>
+<th>Best When</th>
+<th>GCP Implementation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Rolling update</strong></td>
+<td>Update instances one at a time; old + new versions run simultaneously</td>
+<td>API is backward compatible</td>
+<td>MIG: change instance template; GKE: change Docker image; App Engine: automatic</td>
+</tr>
+<tr>
+<td><strong>Blue/Green</strong></td>
+<td>Create full new environment (green); test; switch all traffic at once</td>
+<td>Can't have 2 versions running simultaneously</td>
+<td>Compute Engine: DNS migration; GKE: service label change; App Engine: Traffic Splitting</td>
+</tr>
+<tr>
+<td><strong>Canary</strong></td>
+<td>Route small % of traffic to new version; monitor; increase gradually</td>
+<td>Reduce risk before full rollout</td>
+<td>Compute Engine: add new MIG as additional backend; GKE: new pod with same labels; App Engine: Traffic Splitting</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Version management rules:</strong>
+- Include version in URI (<code>/v1/</code>, <code>/v2/</code>)
+- Change version when making breaking changes
+- Deploy new versions with <strong>zero downtime</strong>
+- Never remove items from API responses (only add)</p>
+<hr />
+<h3 id="cost-optimization">Cost Optimization</h3>
+<p><strong>Compute cost levers:</strong>
+- Start with small VMs + autoscaling (test first, then scale)
+- <strong>Committed use discounts</strong> for predictable workloads
+- <strong>Spot VMs</strong> for fault-tolerant workloads: 60-91% discount (preemptible)
+- Use <strong>GCP rightsizing recommendations</strong> to eliminate waste
+- <strong>GKE usage metering</strong>: compares requested vs consumed resources per namespace</p>
+<p><strong>Storage cost levers:</strong>
+- Don't over-allocate disk; match I/O pattern to disk type (Standard PD is 4x cheaper than SSD PD)
+- Choose storage service wisely: 1 GB in Firestore ≈ free; 1 GB in Bigtable ≈ $500/month
+- Use <strong>CDN + caching</strong> (Memorystore) to reduce backend compute + storage needs
+- Use <strong>Pub/Sub</strong> instead of a datastore to decouple services</p>
+<p><strong>Network cost:</strong> Egress within same zone = free; between zones = small cost; between regions/intercontinental = highest. Keep machines close to data.</p>
+<p><strong>Cost management tools:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pricing Calculator</strong></td>
+<td>Estimate costs before deploying</td>
+</tr>
+<tr>
+<td><strong>Cloud Billing Reports</strong></td>
+<td>Monitor current spend; breakdown by project/product/region</td>
+</tr>
+<tr>
+<td><strong>BigQuery export</strong></td>
+<td>Advanced cost analysis; identify large expenses; SQL queries</td>
+</tr>
+<tr>
+<td><strong>Looker Studio</strong></td>
+<td>Visual billing dashboards (daily + monthly views)</td>
+</tr>
+<tr>
+<td><strong>Budget alerts</strong></td>
+<td>Email + Pub/Sub → Cloud Run function for automated cost management</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Capacity planning</strong> is a continuous cycle: Forecast → Allocate → Approve → Deploy → Monitor → repeat.</p>
+<hr />
+<h2 id="scenario-breakdowns">🎯 Scenario Breakdowns</h2>
+<h3 id="scenario-designing-for-high-availability-multi-tier-app">Scenario: Designing for High Availability (Multi-tier App)</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Architecture (US users, two regions):
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>  Global External Application LB
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    ├── us-central1 (primary)
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    │   ├── Managed Instance Group (web tier, zone a + b)
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    │   ├── Cloud SQL (primary) + failover replica (zone b)
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    │   └── Firestore (multi-region, 99.999%)
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    └── us-east1 (backup)
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>        └── MIG (standby, cold or hot depending on RTO)
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>Cloud Storage (multi-region) for backups
+</code></pre></div>
+<h3 id="scenario-disaster-recovery-decision-matrix">Scenario: Disaster Recovery Decision Matrix</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>RPO</th>
+<th>RTO</th>
+<th>Strategy</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Orders DB (Cloud SQL)</td>
+<td>0 (no data loss)</td>
+<td>2 min</td>
+<td>Failover replica + binary logging</td>
+<td>Multi-zone</td>
+</tr>
+<tr>
+<td>Inventory (Firestore)</td>
+<td>1 hr</td>
+<td>1 hr</td>
+<td>Daily automated backups</td>
+<td>Multi-region Cloud Storage</td>
+</tr>
+<tr>
+<td>Analytics (BigQuery)</td>
+<td>0 min</td>
+<td>24 hr</td>
+<td>Re-import data (no specific backup)</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="scenario-choosing-load-balancers-for-a-travel-portal">Scenario: Choosing Load Balancers for a Travel Portal</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Internet-facing?</th>
+<th>Protocol</th>
+<th>Load Balancer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Search</td>
+<td>✅ Yes</td>
+<td>HTTP</td>
+<td>Global External Application LB</td>
+</tr>
+<tr>
+<td>Web UI</td>
+<td>✅ Yes</td>
+<td>HTTP</td>
+<td>Global External Application LB</td>
+</tr>
+<tr>
+<td>Inventory</td>
+<td>❌ Internal</td>
+<td>TCP</td>
+<td>Regional Internal Passthrough LB</td>
+</tr>
+<tr>
+<td>Orders</td>
+<td>❌ Internal</td>
+<td>TCP</td>
+<td>Regional Internal Passthrough LB</td>
+</tr>
+<tr>
+<td>Analytics</td>
+<td>✅ Yes</td>
+<td>HTTP</td>
+<td>Regional External Application LB</td>
+</tr>
+</tbody>
+</table>
+<h3 id="scenario-security-architecture">Scenario: Security Architecture</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Internet → Cloud Armor (WAF, deny lists) → Global External Application LB
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>         → Custom VPC (firewall: allow HTTPS 0.0.0.0/0, allow SSH from known IPs)
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>            ├── us-central1 subnet (primary)
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>            ├── us-east1 subnet (backup)
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>            └── europe-west2 subnet (EU users)
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>         → Private Google Access enabled (VMs reach GCP services via internal IP)
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>         → Cloud VPN → On-prem LAN (internal-only services)
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>         → GCP Managed Services (Firestore, Cloud SQL, BigQuery) via Private Access
+</code></pre></div>
+<hr />
+<h2 id="key-exam-tips">🔑 Key Exam Tips</h2>
+<ul>
+<li><strong>SLO must always be stricter than SLA</strong> — provides buffer for proactive action</li>
+<li><strong>Not every service needs an SLA, but every service needs an SLO</strong></li>
+<li><strong>12-Factor factor 3 (Config):</strong> Store secrets in env vars, never in source code</li>
+<li><strong>12-Factor factor 11 (Logs):</strong> Write to stdout; aggregate to central sink</li>
+<li><strong>N+2 rule for single points of failure</strong> — one for maintenance, one for unexpected failure</li>
+<li><strong>Correlated failures</strong> = failure domain; mitigate by spreading across zones/regions</li>
+<li><strong>Cascading failure mitigation</strong> = health checks + autohealing + capacity headroom</li>
+<li><strong>Circuit breaker</strong> (GKE: Istio) protects overloaded services from retry storms</li>
+<li><strong>Lazy deletion</strong> = trash → soft delete → hard delete; protects against accidental deletion</li>
+<li><strong>RPO</strong> = data loss tolerance; <strong>RTO</strong> = downtime tolerance</li>
+<li><strong>Cold standby</strong> = snapshots; restore later. <strong>Hot standby</strong> = multi-region active deployment</li>
+<li><strong>Spanner + Firestore multi-region</strong> = 99.999% ("five nines"); &lt; 6 min downtime/year</li>
+<li><strong>Rolling update</strong> = 2 versions run simultaneously (OK for backward-compatible APIs)</li>
+<li><strong>Blue/green</strong> = full environment swap; no simultaneous versions; easy rollback</li>
+<li><strong>Canary</strong> = small % traffic to new version; validate before full rollout</li>
+<li><strong>Shared VPC</strong> = centralized network control; developers focus on workloads, not networking</li>
+<li><strong>VPC Peering</strong> = GCP-to-GCP; subnets cannot overlap</li>
+<li><strong>HA VPN</strong> = 99.99%; requires BGP/Cloud Router; 2 external IPs; dynamic routing</li>
+<li><strong>Dedicated Interconnect</strong> = direct physical 10–200 Gbps; requires colocation facility</li>
+<li><strong>Partner Interconnect</strong> = via service provider; 50 Mbps–10 Gbps; no colocation needed</li>
+<li><strong>CSEK</strong> = you supply keys per API call; only in RAM at Google; Compute Engine + Cloud Storage</li>
+<li><strong>CMEK</strong> = keys in Cloud KMS; you control rotation; broader service support</li>
+<li><strong>DLP API</strong> = scan + redact PII (credit cards, SSNs, emails) from Cloud Storage/BQ/Firestore</li>
+<li><strong>Binary Authorization</strong> = enforce only attested images deploy to GKE; Kritis spec</li>
+<li><strong>Cloud Armor</strong> = L7 WAF; geo-blocking; SQL injection/XSS protection; allow/deny lists</li>
+</ul>
+<hr />
+<p><em>Notes generated from: Reliable Cloud Infrastructure: Design and Process — Defining Services, Microservice Design &amp; Architecture, DevOps Automation, Choosing Storage, Network Architecture, Deploying Applications, Designing Reliable Systems, Security, Maintenance &amp; Monitoring</em></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

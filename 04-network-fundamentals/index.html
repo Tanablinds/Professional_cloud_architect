@@ -1,0 +1,2936 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Structured study notes for the Google Professional Cloud Architect exam">
+      
+      
+        <meta name="author" content="PCA Candidate">
+      
+      
+        <link rel="canonical" href="https://Tanablinds.github.io/Professional_cloud_architect/04-network-fundamentals/">
+      
+      
+        <link rel="prev" href="../10-terraform-gcp/">
+      
+      
+        <link rel="next" href="../05-network-architecture/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>GCP Networking in Google Cloud — VPC Fundamentals - GCP Professional Cloud Architect Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#gcp-networking-in-google-cloud-vpc-fundamentals" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="GCP Professional Cloud Architect Notes" class="md-header__button md-logo" aria-label="GCP Professional Cloud Architect Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GCP Professional Cloud Architect Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              GCP Networking in Google Cloud — VPC Fundamentals
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Tanablinds/Professional_cloud_architect" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Tanablinds/Professional_cloud_architect
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../01-cloud-fundamentals-core-infrastructure/" class="md-tabs__link">
+          
+  
+  
+  Foundations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../03-elastic-scaling-automation/" class="md-tabs__link">
+          
+  
+  
+  Compute & Scaling
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Networking
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../07-managing-security-gcp/" class="md-tabs__link">
+          
+  
+  
+  Security & Operations
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="GCP Professional Cloud Architect Notes" class="md-nav__button md-logo" aria-label="GCP Professional Cloud Architect Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GCP Professional Cloud Architect Notes
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Tanablinds/Professional_cloud_architect" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Tanablinds/Professional_cloud_architect
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foundations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Foundations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-cloud-fundamentals-core-infrastructure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    01 · Cloud Fundamentals & Core Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-essential-core-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    02 · Essential Core Services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compute & Scaling
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Compute & Scaling
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-elastic-scaling-automation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    03 · Elastic Scaling & Automation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-kubernetes-engine-gke/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    09 · Kubernetes Engine (GKE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-terraform-gcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10 · Terraform on GCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Networking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Networking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    04 · Network Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    04 · Network Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-module-covers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📦 What This Module Covers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-1-vpc-networking-fundamentals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 1 — VPC Networking Fundamentals
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 1 — VPC Networking Fundamentals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-vpc-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a VPC Network?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vpc-network-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VPC Network Modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-routing-behaviour" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Default Routing Behaviour
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-network-interface-controllers-nics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple Network Interface Controllers (NICs)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multiple Network Interface Controllers (NICs)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-multiple-nics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Multiple NICs?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-nics-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How NICs Work
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nic-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NIC Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-architecture-security-appliance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example Architecture: Security Appliance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-service-tiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Service Tiers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Network Service Tiers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#premium-tier-vs-standard-tier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Premium Tier vs Standard Tier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-service-tiers-decision-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Service Tiers Decision Tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-premium-tier-works-cold-potato-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Premium Tier Works (Cold Potato Routing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-standard-tier-works-hot-potato-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Standard Tier Works (Hot Potato Routing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pricing-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pricing Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-2-sharing-vpc-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 2 — Sharing VPC Networks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 2 — Sharing VPC Networks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vpc-network-peering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VPC Network Peering
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VPC Network Peering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-peering-is-established" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Peering is Established
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vpc-peering-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VPC Peering Properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advanced-peering-with-a-shared-vpc-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced: Peering with a Shared VPC Network
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shared-vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared VPC
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Shared VPC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#roles-in-shared-vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roles in Shared VPC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shared-vpc-vs-vpc-network-peering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Shared VPC vs VPC Network Peering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vm-migration-between-vpc-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VM Migration Between VPC Networks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-3-network-monitoring-and-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 3 — Network Monitoring and Logging
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 3 — Network Monitoring and Logging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#network-intelligence-center" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Intelligence Center
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connectivity-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connectivity Tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance Dashboard
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firewall-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firewall Insights
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-analyzer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Analyzer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vpc-flow-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VPC Flow Logs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VPC Flow Logs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-each-log-record-contains-5-tuple-more" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Each Log Record Contains (5-tuple + more)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use Cases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exporting-and-analysing-flow-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exporting and Analysing Flow Logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow-analyzer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flow Analyzer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#packet-mirroring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Packet Mirroring
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-observability-tools-compared" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Network Observability Tools Compared
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pca-exam-scenarios-to-know" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 PCA Exam Scenarios to Know
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-cli-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔗 Key CLI Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-network-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 · Network Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-hybrid-multicloud-connectivity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06 · Hybrid & Multicloud Connectivity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security & Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Security & Operations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-managing-security-gcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    07 · Managing Security on GCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-logging-monitoring-gcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11 · Logging & Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-reliable-infrastructure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13 · Reliable Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-module-covers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📦 What This Module Covers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-1-vpc-networking-fundamentals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 1 — VPC Networking Fundamentals
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 1 — VPC Networking Fundamentals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-a-vpc-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is a VPC Network?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vpc-network-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VPC Network Modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-routing-behaviour" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Default Routing Behaviour
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-network-interface-controllers-nics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple Network Interface Controllers (NICs)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multiple Network Interface Controllers (NICs)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-multiple-nics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Multiple NICs?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-nics-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How NICs Work
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nic-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NIC Rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-architecture-security-appliance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example Architecture: Security Appliance
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-service-tiers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Service Tiers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Network Service Tiers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#premium-tier-vs-standard-tier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Premium Tier vs Standard Tier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-service-tiers-decision-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Service Tiers Decision Tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-premium-tier-works-cold-potato-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Premium Tier Works (Cold Potato Routing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-standard-tier-works-hot-potato-routing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Standard Tier Works (Hot Potato Routing)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pricing-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pricing Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-2-sharing-vpc-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 2 — Sharing VPC Networks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 2 — Sharing VPC Networks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vpc-network-peering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VPC Network Peering
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VPC Network Peering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-peering-is-established" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Peering is Established
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vpc-peering-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VPC Peering Properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advanced-peering-with-a-shared-vpc-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced: Peering with a Shared VPC Network
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shared-vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared VPC
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Shared VPC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#roles-in-shared-vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Roles in Shared VPC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shared-vpc-vs-vpc-network-peering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Shared VPC vs VPC Network Peering
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vm-migration-between-vpc-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VM Migration Between VPC Networks
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-3-network-monitoring-and-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 3 — Network Monitoring and Logging
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 3 — Network Monitoring and Logging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#network-intelligence-center" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Intelligence Center
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connectivity-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connectivity Tests
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#performance-dashboard" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance Dashboard
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firewall-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firewall Insights
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-analyzer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Analyzer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vpc-flow-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VPC Flow Logs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="VPC Flow Logs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-properties" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Properties
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-each-log-record-contains-5-tuple-more" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What Each Log Record Contains (5-tuple + more)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use Cases
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exporting-and-analysing-flow-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exporting and Analysing Flow Logs
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flow-analyzer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flow Analyzer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#packet-mirroring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Packet Mirroring
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-observability-tools-compared" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Network Observability Tools Compared
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pca-exam-scenarios-to-know" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 PCA Exam Scenarios to Know
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-cli-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔗 Key CLI Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="gcp-networking-in-google-cloud-vpc-fundamentals">🏗️ GCP Networking in Google Cloud: VPC Fundamentals</h1>
+<blockquote>
+<p><strong>Note Type:</strong> Service Blueprint<br />
+<strong>Why this type?</strong> This module is a deep structural walkthrough of GCP's VPC networking model — how VPCs, subnets, NICs, and sharing mechanisms are architected — and how the network monitoring toolchain (Network Intelligence Center, VPC Flow Logs, Packet Mirroring) is built and used.</p>
+</blockquote>
+<hr />
+<h2 id="what-this-module-covers">📦 What This Module Covers</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Module</th>
+<th>Key Concepts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>VPC Networking Fundamentals</td>
+<td>VPC internals, multiple NICs, Network Service Tiers (Premium vs Standard)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Sharing VPC Networks</td>
+<td>VPC Network Peering, Shared VPC, VM migration between networks</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Network Monitoring and Logging</td>
+<td>Network Intelligence Center, VPC Flow Logs, Flow Analyzer, Packet Mirroring</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="module-1-vpc-networking-fundamentals">Module 1 — VPC Networking Fundamentals</h2>
+<h3 id="what-is-a-vpc-network">What is a VPC Network?</h3>
+<p>A <strong>Virtual Private Cloud (VPC)</strong> is a virtual version of a physical network, providing:</p>
+<ul>
+<li>Connectivity for <strong>Compute Engine VMs</strong>, GKE clusters, App Engine flexible instances</li>
+<li>Built-in <strong>internal passthrough Network Load Balancers</strong> and proxy systems for internal Application LBs</li>
+<li>Distribution of traffic from <strong>external load balancers</strong> to backends</li>
+<li>Connectivity to on-premises networks via <strong>Cloud VPN</strong> and <strong>Cloud Interconnect</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>VPC Network (global)
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  ├── Subnet (regional) — us-central1
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  │     ├── VM instances in zone -a
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  │     └── VM instances in zone -b
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  └── Subnet (regional) — europe-west1
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        └── VM instances in zone -c
+</code></pre></div>
+<hr />
+<h3 id="vpc-network-modes">VPC Network Modes</h3>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Subnets</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Auto mode</strong></td>
+<td>One per region, automatically created with predefined CIDR ranges</td>
+<td>Learning / quick start</td>
+</tr>
+<tr>
+<td><strong>Custom mode</strong></td>
+<td>You define subnets, regions, and CIDR ranges</td>
+<td>✅ Production — Google recommended</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 New projects get a <strong>default auto mode VPC</strong> — delete it or convert to custom mode before production use.</p>
+</blockquote>
+<hr />
+<h3 id="default-routing-behaviour">Default Routing Behaviour</h3>
+<ul>
+<li>Every VPC has <strong>routes for all subnets</strong> — instances can reach each other across subnets without a router</li>
+<li>Every VPC has a <strong>default route</strong> (0.0.0.0/0) directing traffic outside the network to the internet gateway</li>
+<li><strong>Custom routes</strong> can override default routes (e.g., route specific CIDRs through a VPN tunnel or appliance)</li>
+<li>Routes alone are not enough — <strong>firewall rules must also allow the traffic</strong></li>
+</ul>
+<blockquote>
+<p>⚠️ The <strong>default VPC</strong> comes with pre-configured firewall rules allowing all instances to communicate with each other. <strong>Manually created VPCs do not</strong> — you must create firewall rules explicitly.</p>
+</blockquote>
+<hr />
+<h3 id="multiple-network-interface-controllers-nics">Multiple Network Interface Controllers (NICs)</h3>
+<h4 id="why-multiple-nics">Why Multiple NICs?</h4>
+<p>VPC networks are <strong>isolated by default</strong> — instances in different VPCs cannot communicate via internal IPs without explicit mechanisms. Multiple NICs allow a <strong>single VM to bridge multiple isolated VPC networks</strong>.</p>
+<p>Use cases:
+- <strong>Virtual network appliance</strong> — security appliance, IDS/IPS, WAF, load balancer sitting between networks
+- <strong>Traffic separation</strong> — separate data plane traffic from management/control plane traffic
+- <strong>Multi-tenant environments</strong> — isolate traffic streams while sharing compute</p>
+<h4 id="how-nics-work">How NICs Work</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>VM Appliance
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  ├── nic0 → subnet-1 in VPC-A  (data plane)
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  ├── nic1 → subnet-1 in VPC-B  (management plane)
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  ├── nic2 → subnet-2 in VPC-C  (partner network)
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  └── nic3 → subnet-1 in VPC-D  (on-prem via VPN)
+</code></pre></div>
+<h4 id="nic-rules">NIC Rules</h4>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Each NIC → different VPC</td>
+<td>No two NICs can be on the same VPC</td>
+</tr>
+<tr>
+<td>Each NIC has an internal IP</td>
+<td>External IP is optional per NIC</td>
+</tr>
+<tr>
+<td>NICs are immutable</td>
+<td><strong>Cannot add or remove NICs after instance creation</strong> — plan upfront</td>
+</tr>
+<tr>
+<td>Uses internal IP across networks</td>
+<td>Communication between VPCs via NIC uses internal IP (not external)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 <strong>PCA tip:</strong> When a question involves a virtual appliance filtering traffic between VPCs (firewall, IDS/IPS, WAF), the answer is <strong>multiple NICs</strong> — not VPC peering or Shared VPC.</p>
+</blockquote>
+<h4 id="example-architecture-security-appliance">Example Architecture: Security Appliance</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Internet
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    ↓
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>VM Appliance (nic0: untrusted internet-facing, nic1: VPC-A web tier, nic2: VPC-B DB tier)
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    ├── Firewall rules applied per NIC independently
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    ├── Inspects and filters control plane vs data plane traffic
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    └── Routes between VPC-A and VPC-B internally
+</code></pre></div>
+<hr />
+<h3 id="network-service-tiers">Network Service Tiers</h3>
+<h4 id="the-problem">The Problem</h4>
+<p>Traffic from your GCP workloads to end users must travel over a network. By default, that network is the <strong>public internet</strong> — subject to congestion, variable latency, and ISP routing decisions. Google offers two network tiers to control this trade-off.</p>
+<hr />
+<h4 id="premium-tier-vs-standard-tier">⚖️ Premium Tier vs Standard Tier</h4>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th><strong>Premium Tier</strong></th>
+<th><strong>Standard Tier</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Routing</td>
+<td><strong>Cold potato</strong> — enters Google network at nearest PoP to user; stays on Google's private backbone until destination</td>
+<td><strong>Hot potato</strong> — exits Google network near source; travels over public internet</td>
+</tr>
+<tr>
+<td>Performance</td>
+<td>Highest — minimum hops, minimum congestion</td>
+<td>Comparable to other cloud providers</td>
+</tr>
+<tr>
+<td>Availability SLA</td>
+<td><strong>99.99%</strong></td>
+<td><strong>99.9%</strong></td>
+</tr>
+<tr>
+<td>IP addresses</td>
+<td>Regional and <strong>global</strong> external IPv4 + IPv6</td>
+<td>Regional external IPv4 only (no BYOIP)</td>
+</tr>
+<tr>
+<td>Load balancing</td>
+<td>Global + regional external LBs, Cloud CDN, GKE, Cloud NAT, Cloud VPN</td>
+<td>Regional only: Cloud NAT, Regional External Application LB, External Passthrough Network LB</td>
+</tr>
+<tr>
+<td>Unique to Google</td>
+<td>✅ Yes — Google's private backbone</td>
+<td>❌ No — ISP networks</td>
+</tr>
+<tr>
+<td>Price</td>
+<td>Higher</td>
+<td>Lower</td>
+</tr>
+<tr>
+<td>When to choose</td>
+<td>Performance-critical, global apps, multi-region users</td>
+<td>Cost-sensitive, single-region, standard workloads</td>
+</tr>
+</tbody>
+</table>
+<h4 id="network-service-tiers-decision-tree">Network Service Tiers Decision Tree</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>What matters most for this workload?
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>├── Performance / low latency  →  Premium Tier
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>└── Cost optimisation          →  Standard Tier (but check limits first)
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>If Standard Tier — do you need any of the following?
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  ├── Global load balancing?    → ❌ Not available → use Premium
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  ├── Cloud CDN?                → ❌ Not available → use Premium
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  ├── Multi-region backends?    → ❌ Not available → use Premium
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  └── None of the above?        → ✅ Standard Tier is fine
+</code></pre></div>
+<h4 id="how-premium-tier-works-cold-potato-routing">How Premium Tier Works (Cold Potato Routing)</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>End User (Tokyo)
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  → Enters Google Network at Tokyo PoP (closest PoP to user)
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  → Travels entirely on Google&#39;s private fiber backbone
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  → Exits near destination GCP region (e.g., us-central1)
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  → Single hop to end user&#39;s ISP at destination
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>Result: consistent, low-latency, high-throughput path
+</code></pre></div>
+<h4 id="how-standard-tier-works-hot-potato-routing">How Standard Tier Works (Hot Potato Routing)</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>GCP Region (us-central1)
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  → Exits Google network near the source region
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  → Travels over public internet / ISP networks
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  → Arrives at end user via public routing
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>Result: lower cost, variable latency, depends on ISP quality
+</code></pre></div>
+<h4 id="pricing-model">Pricing Model</h4>
+<ul>
+<li><strong>Premium Tier:</strong> Priced on both <strong>source AND destination</strong> (because traffic travels far over Google's network)</li>
+<li><strong>Standard Tier:</strong> Priced on <strong>source only</strong> (traffic exits Google network quickly)</li>
+<li>Geographic pricing tiers: NA ↔ NA cheapest; intercontinental traffic more expensive; Oceania and China most expensive</li>
+</ul>
+<hr />
+<h2 id="module-2-sharing-vpc-networks">Module 2 — Sharing VPC Networks</h2>
+<h3 id="vpc-network-peering">VPC Network Peering</h3>
+<p><strong>VPC Network Peering</strong> allows <strong>private RFC1918 IP connectivity</strong> between two VPC networks — regardless of whether they belong to the same project, same organisation, or different organisations.</p>
+<h4 id="how-peering-is-established">How Peering is Established</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Org A (Producer)           Org B (Consumer)
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  VPC-Producer               VPC-Consumer
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>      ↓                           ↓
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  Admin peers                Admin peers
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  Producer → Consumer        Consumer → Producer
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>      ↓                           ↓
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  Both sides configured?  →  Session Active → Routes Exchanged
+</code></pre></div>
+<blockquote>
+<p>Both sides <strong>must independently configure</strong> the peering. If only one side peers, the session stays inactive.</p>
+</blockquote>
+<h4 id="vpc-peering-properties">VPC Peering Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Transitive peering</strong></td>
+<td>❌ Not supported — if A↔B and B↔C, A cannot reach C via B</td>
+</tr>
+<tr>
+<td><strong>Subnet CIDR overlap</strong></td>
+<td>❌ Not allowed — peered VPC subnets must not overlap</td>
+</tr>
+<tr>
+<td><strong>Administrative separation</strong></td>
+<td>✅ Each VPC keeps its own firewall rules, routes, VPN independently</td>
+</tr>
+<tr>
+<td><strong>Deletion</strong></td>
+<td>Either side can delete the peering at any time</td>
+</tr>
+<tr>
+<td><strong>Works with</strong></td>
+<td>Compute Engine, GKE, App Engine flexible</td>
+</tr>
+<tr>
+<td><strong>Route exchange</strong></td>
+<td>Dynamic — custom routes can optionally be exported/imported</td>
+</tr>
+</tbody>
+</table>
+<h4 id="advanced-peering-with-a-shared-vpc-network">Advanced: Peering with a Shared VPC Network</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Host Project P1
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  Shared VPC network-SVPC
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    └── Subnet 1, Subnet 2, Subnet 3
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>          ├── Service Project P3 (VM3 in Subnet 1)
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>          └── Service Project P4 (VM4 in Subnet 2)
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>Project P2
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>  network-A (peered with network-SVPC)
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>    └── VM2
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>Result: VM1 (P3), VM2 (P2), VM4 (P4) all communicate via private IPs
+</code></pre></div>
+<p>You can also peer two Shared VPC networks together.</p>
+<hr />
+<h3 id="shared-vpc">Shared VPC</h3>
+<p><strong>Shared VPC</strong> allows a <strong>host project</strong> to share its VPC subnets with <strong>service projects</strong> within the same organisation. Service project VMs run in the host VPC's subnets — centrally managed networking.</p>
+<h4 id="roles-in-shared-vpc">Roles in Shared VPC</h4>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Organisation Admin</strong></td>
+<td>Nominates Shared VPC admins</td>
+</tr>
+<tr>
+<td><strong>Shared VPC Admin</strong></td>
+<td>Sets up host project, attaches service projects</td>
+</tr>
+<tr>
+<td><strong>Service Project Admin</strong></td>
+<td>Creates VMs in the shared subnets</td>
+</tr>
+</tbody>
+</table>
+<h4 id="architecture">Architecture</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Organisation
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>  └── Host Project (owns shared VPC network)
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>        ├── Shared VPC network (subnets: subnet-A, subnet-B)
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>        └── Service Project 1 → VMs run in subnet-A
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>        └── Service Project 2 → VMs run in subnet-B
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>        └── Service Project 3 → VMs run in subnet-A or subnet-B
+</code></pre></div>
+<hr />
+<h3 id="shared-vpc-vs-vpc-network-peering">⚖️ Shared VPC vs VPC Network Peering</h3>
+<table>
+<thead>
+<tr>
+<th>Consideration</th>
+<th><strong>Shared VPC</strong></th>
+<th><strong>VPC Network Peering</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Across organisations</td>
+<td>❌ No</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>Within same project</td>
+<td>❌ No</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>Cross-project, same org</td>
+<td>✅ Yes</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>Network administration</td>
+<td><strong>Centralised</strong> — one host VPC, one admin team</td>
+<td><strong>Decentralised</strong> — each VPC manages its own firewall/routing</td>
+</tr>
+<tr>
+<td>Firewall management</td>
+<td>Central host project controls firewall</td>
+<td>Each VPC maintains its own rules</td>
+</tr>
+<tr>
+<td>IP address ownership</td>
+<td>VMs get IPs from host VPC subnets</td>
+<td>VMs keep IPs in their own VPC</td>
+</tr>
+<tr>
+<td>Use case</td>
+<td>Enterprise with central networking team; compliance-driven</td>
+<td>SaaS producer↔consumer; separate orgs; decentralised teams</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 <strong>Choosing guide:</strong>
+- Need <strong>central network control + compliance</strong>? → Shared VPC
+- Need to connect <strong>different orgs or same project</strong>? → VPC Peering
+- Need <strong>transitive routing</strong> (A → B → C)? → Neither; use VPN or a hub-and-spoke NVA</p>
+</blockquote>
+<hr />
+<h3 id="vm-migration-between-vpc-networks">VM Migration Between VPC Networks</h3>
+<p>You can move a VM from one VPC network to another <strong>within the same zone and project</strong> (intra-project migration).</p>
+<p><strong>Pre-migration requirements:</strong>
+- VM must be in the same zone/project as the target network
+- No conflicting subnet CIDR ranges
+- Target network must have appropriate firewall rules</p>
+<p><strong>Supported migrations:</strong>
+- Auto mode network → Custom mode network
+- Custom mode → Custom mode (same project, same zone)</p>
+<blockquote>
+<p>⚠️ Cross-project VM migration is <strong>not supported</strong>. Use snapshots + re-deployment for that.</p>
+</blockquote>
+<hr />
+<h2 id="module-3-network-monitoring-and-logging">Module 3 — Network Monitoring and Logging</h2>
+<h3 id="network-intelligence-center">Network Intelligence Center</h3>
+<p><strong>Network Intelligence Center</strong> is GCP's centralised network observability platform. It shifts network operations from <strong>reactive to proactive</strong> — 75% of network outages are caused by misconfiguration, often discovered only in production.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Network Intelligence Center
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>  ├── Topology        → Visualise VPC network graph
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>  ├── Connectivity Tests → Self-diagnose reachability issues
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>  ├── Performance Dashboard → Real-time latency and packet loss metrics
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>  ├── Firewall Insights → Analyse firewall rule usage and optimise rules
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>  └── Network Analyzer → Auto-detect misconfigurations and suggest fixes
+</code></pre></div>
+<hr />
+<h3 id="connectivity-tests">Connectivity Tests</h3>
+<p><strong>Self-service reachability testing</strong> — diagnose whether a packet can travel from source to destination given current network configuration.</p>
+<ul>
+<li>Tests paths: <strong>VM → VM</strong>, <strong>VM → external IP</strong>, <strong>GCP → on-premises</strong></li>
+<li>Checks: firewall rules, routes, VPC peering, Shared VPC, NAT</li>
+<li><strong>Saves and reruns tests</strong> — detect if config changes break expected connectivity</li>
+<li>Used internally by Google Cloud Support for customer issue resolution</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Create test:
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>  Source: VM-A (10.10.0.2, us-central1-a)
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>  Destination: VM-B (10.50.0.2, us-east1-b)
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>  Protocol: TCP, Port 443
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>Result: REACHABLE or UNREACHABLE + reason (e.g., &quot;Firewall rule blocks egress on port 443&quot;)
+</code></pre></div>
+<hr />
+<h3 id="performance-dashboard">Performance Dashboard</h3>
+<ul>
+<li>Shows <strong>real-time latency and packet loss</strong> between zones where you have VMs</li>
+<li>Helps distinguish: <strong>is this an application problem or a network problem?</strong></li>
+<li>Shows both <strong>customer project metrics</strong> and <strong>Google Cloud general metrics</strong></li>
+<li>Query example (via Gemini): <em>"What's the average latency between my VMs in us-east4 and us-central1?"</em> → Performance Dashboard</li>
+</ul>
+<hr />
+<h3 id="firewall-insights">Firewall Insights</h3>
+<p>Helps you <strong>understand, verify, and optimise firewall rules</strong> using real traffic data.</p>
+<p><strong>Data sources:</strong>
+- <strong>Cloud Monitoring metrics</strong> — derived from Firewall Rules Logging
+- <strong>Recommender insights</strong> — ML-based suggestions for rule optimisation</p>
+<p><strong>What you can do with Firewall Insights:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Task</th>
+<th>How</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Analyse rule usage</td>
+<td>See which rules are being hit and which are unused</td>
+</tr>
+<tr>
+<td>Track connection behaviour</td>
+<td>Verify rules allow/block correct traffic over time</td>
+</tr>
+<tr>
+<td>Diagnose dropped connections</td>
+<td>Find rules accidentally blocking legitimate traffic</td>
+</tr>
+<tr>
+<td>Identify potential threats</td>
+<td>Detect anomalous spikes in firewall rule hit counts</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ Must enable <strong>Firewall Rules Logging</strong> per firewall rule to populate Firewall Insights metrics.</p>
+</blockquote>
+<hr />
+<h3 id="network-analyzer">Network Analyzer</h3>
+<ul>
+<li><strong>Continuously monitors</strong> VPC network configurations automatically</li>
+<li>Detects <strong>misconfigurations</strong> (e.g., missing firewall rules, route conflicts) and <strong>suboptimal configurations</strong></li>
+<li>Runs on near-real-time config updates — triggers analysis when config changes</li>
+<li>Provides: root cause information + suggested resolution</li>
+</ul>
+<p><strong>Example insight:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Type: Error
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>Issue: GKE node cannot reach control plane
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>Root cause: Ingress firewall rule blocking node → control plane connection
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>            (default rule was deleted/shadowed)
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>Fix: Create new firewall rule OR increase priority of correct rule
+</code></pre></div></p>
+<hr />
+<h3 id="vpc-flow-logs">VPC Flow Logs</h3>
+<p><strong>VPC Flow Logs</strong> record a sample of <strong>network flows</strong> sent from and received by VM instances within a VPC subnet.</p>
+<h4 id="key-properties">Key Properties</h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Granularity</strong></td>
+<td>Per VM instance; captures both directions of a flow</td>
+</tr>
+<tr>
+<td><strong>Latency</strong></td>
+<td>Near-real-time — log updates every <strong>5 seconds</strong></td>
+</tr>
+<tr>
+<td><strong>Performance impact</strong></td>
+<td>None — no delay or penalty to live traffic</td>
+</tr>
+<tr>
+<td><strong>Enablement</strong></td>
+<td>Per-subnet (applies to all VMs in that subnet)</td>
+</tr>
+<tr>
+<td><strong>Sample rate</strong></td>
+<td>Configurable (default ~50%) — tradeoff between coverage and log volume/cost</td>
+</tr>
+</tbody>
+</table>
+<h4 id="what-each-log-record-contains-5-tuple-more">What Each Log Record Contains (5-tuple + more)</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>connection.src_ip      Source IP address
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>connection.src_port    Source port
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>connection.dest_ip     Destination IP address
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>connection.dest_port   Destination port
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>protocol               Protocol number
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>bytes_sent             Bytes in this flow
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>start_time / end_time  First/last observed packet timestamps
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>instance details       VM name, zone, project
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>VPC details            Network, subnetwork
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>geo details            Country/region of source/destination
+</code></pre></div>
+<h4 id="use-cases">Use Cases</h4>
+<table>
+<thead>
+<tr>
+<th>Use Case</th>
+<th>How Flow Logs Help</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Network monitoring</strong></td>
+<td>Understand traffic volumes and patterns</td>
+</tr>
+<tr>
+<td><strong>Security forensics</strong></td>
+<td>Investigate suspicious connections post-incident</td>
+</tr>
+<tr>
+<td><strong>Real-time security analysis</strong></td>
+<td>Stream logs to SIEM for anomaly detection</td>
+</tr>
+<tr>
+<td><strong>Cost optimisation</strong></td>
+<td>Identify unnecessary cross-region or cross-zone traffic</td>
+</tr>
+<tr>
+<td><strong>Compliance</strong></td>
+<td>Audit trail of all network communication</td>
+</tr>
+</tbody>
+</table>
+<h4 id="exporting-and-analysing-flow-logs">Exporting and Analysing Flow Logs</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>VPC Subnet (Flow Logs enabled)
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>  → Cloud Logging (automatic ingestion)
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>    └── Log Sink → BigQuery
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>          └── Looker Studio (visualise traffic patterns)
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>          └── Flow Analyzer (query without SQL)
+</code></pre></div>
+<hr />
+<h3 id="flow-analyzer">Flow Analyzer</h3>
+<p>A <strong>purpose-built UI tool</strong> for analysing VPC Flow Logs without writing SQL.</p>
+<ul>
+<li>Built on <strong>Log Analytics</strong>, powered by <strong>BigQuery</strong></li>
+<li>Provides <strong>5-tuple granularity</strong> (src IP, dst IP, src port, dst port, protocol)</li>
+<li>In-depth inbound/outbound traffic analysis per VM</li>
+<li>Use for: monitoring, troubleshooting, optimisation, compliance, cost analysis</li>
+</ul>
+<blockquote>
+<p>Flow Analyzer vs raw BigQuery: Use Flow Analyzer for exploratory network traffic analysis. Use BigQuery directly for custom aggregations and joining with other datasets.</p>
+</blockquote>
+<hr />
+<h3 id="packet-mirroring">Packet Mirroring</h3>
+<p><strong>Packet Mirroring</strong> clones traffic from specific VM instances and forwards it to a <strong>security/analysis appliance</strong> for deep inspection.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>What it captures</td>
+<td><strong>All</strong> ingress and egress traffic — full payload + headers (not sampled)</td>
+</tr>
+<tr>
+<td>Where mirroring happens</td>
+<td>On the <strong>VM instance</strong> (not the network switch)</td>
+</tr>
+<tr>
+<td>Bandwidth impact</td>
+<td>✅ Consumes additional bandwidth on the host — plan capacity</td>
+</tr>
+<tr>
+<td>vs VPC Flow Logs</td>
+<td>Flow Logs = sampled metadata; Packet Mirroring = full payload, all packets</td>
+</tr>
+<tr>
+<td>Use case</td>
+<td>Security analysis, intrusion detection, full application performance analysis</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>VM Instance (mirrored)
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>  ├── Live traffic → destination (unaffected)
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>  └── Cloned traffic → IDS/IPS appliance or network analysis tool
+</code></pre></div>
+<hr />
+<h3 id="network-observability-tools-compared">⚖️ Network Observability Tools Compared</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>What it answers</th>
+<th>Data type</th>
+<th>Use for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cloud Monitoring dashboards</strong></td>
+<td>Is my VM's CPU/network healthy?</td>
+<td>Metrics</td>
+<td>Capacity planning, alerting</td>
+</tr>
+<tr>
+<td><strong>Uptime checks</strong></td>
+<td>Is my service reachable from the internet?</td>
+<td>Availability</td>
+<td>SLA monitoring</td>
+</tr>
+<tr>
+<td><strong>Connectivity Tests</strong></td>
+<td>Can packet A reach host B given current config?</td>
+<td>Config simulation</td>
+<td>Pre-prod validation, troubleshooting</td>
+</tr>
+<tr>
+<td><strong>Performance Dashboard</strong></td>
+<td>What's the latency/packet loss between my zones?</td>
+<td>Real-time metrics</td>
+<td>Network quality troubleshooting</td>
+</tr>
+<tr>
+<td><strong>Firewall Insights</strong></td>
+<td>Are my firewall rules working as intended?</td>
+<td>Metrics + ML insights</td>
+<td>Rule audit, optimisation</td>
+</tr>
+<tr>
+<td><strong>Network Analyzer</strong></td>
+<td>Is my VPC config correct and optimal?</td>
+<td>Config analysis</td>
+<td>Proactive misconfiguration detection</td>
+</tr>
+<tr>
+<td><strong>VPC Flow Logs</strong></td>
+<td>What traffic is flowing between my VMs?</td>
+<td>Sampled flow metadata</td>
+<td>Security forensics, cost analysis</td>
+</tr>
+<tr>
+<td><strong>Flow Analyzer</strong></td>
+<td>Which VMs are talking to what, by port/protocol?</td>
+<td>5-tuple flow data</td>
+<td>Traffic analysis without SQL</td>
+</tr>
+<tr>
+<td><strong>Packet Mirroring</strong></td>
+<td>What exactly is in the packets my VMs send/receive?</td>
+<td>Full packet payload</td>
+<td>Deep security inspection, IDS/IPS</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="pca-exam-scenarios-to-know">🎯 PCA Exam Scenarios to Know</h2>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VM needs to act as a firewall/IDS between two VPC networks</td>
+<td>Multiple NICs — one per VPC</td>
+</tr>
+<tr>
+<td>Cannot add NICs to an existing VM — what to do?</td>
+<td>Create a new VM with the required NICs from the start</td>
+</tr>
+<tr>
+<td>Low latency global app; users worldwide</td>
+<td>Premium Tier (cold potato routing; stays on Google backbone)</td>
+</tr>
+<tr>
+<td>Cost-optimised single-region internal app</td>
+<td>Standard Tier</td>
+</tr>
+<tr>
+<td>Need global load balancing or Cloud CDN</td>
+<td>Requires Premium Tier</td>
+</tr>
+<tr>
+<td>Two teams in different orgs need private RFC1918 connectivity</td>
+<td>VPC Network Peering</td>
+</tr>
+<tr>
+<td>Central networking team needs to control firewall rules for multiple projects</td>
+<td>Shared VPC (centralised admin model)</td>
+</tr>
+<tr>
+<td>VM in Project A needs to access VM in the same project's other VPC</td>
+<td>VPC Network Peering (Shared VPC doesn't work within same project)</td>
+</tr>
+<tr>
+<td>Detect if a firewall rule change broke connectivity before deploying</td>
+<td>Connectivity Tests (Network Intelligence Center)</td>
+</tr>
+<tr>
+<td>Investigate which IP addresses connected to a compromised VM</td>
+<td>VPC Flow Logs → export to BigQuery</td>
+</tr>
+<tr>
+<td>Deep packet inspection for IDS without affecting live traffic</td>
+<td>Packet Mirroring</td>
+</tr>
+<tr>
+<td>Find root cause of GKE node not reaching control plane</td>
+<td>Network Analyzer (auto-detects and suggests fix)</td>
+</tr>
+<tr>
+<td>Measure latency between zones in real-time</td>
+<td>Network Intelligence Center Performance Dashboard</td>
+</tr>
+<tr>
+<td>Analyse VPC traffic patterns without writing SQL</td>
+<td>Flow Analyzer</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="key-cli-reference">🔗 Key CLI Reference</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># Create custom VPC</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>networks<span class="w"> </span>create<span class="w"> </span>my-vpc<span class="w"> </span>--subnet-mode<span class="o">=</span>custom
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1"># Create subnet</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>networks<span class="w"> </span>subnets<span class="w"> </span>create<span class="w"> </span>my-subnet<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">  </span>--network<span class="o">=</span>my-vpc<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">  </span>--range<span class="o">=</span><span class="m">10</span>.0.0.0/24<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">  </span>--region<span class="o">=</span>us-central1
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="c1"># Create VM with multiple NICs</span>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>create<span class="w"> </span>my-appliance<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="w">  </span>--network-interface<span class="o">=</span><span class="nv">network</span><span class="o">=</span>vpc-a,subnet<span class="o">=</span>subnet-a<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="w">  </span>--network-interface<span class="o">=</span><span class="nv">network</span><span class="o">=</span>vpc-b,subnet<span class="o">=</span>subnet-b<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="w">  </span>--network-interface<span class="o">=</span><span class="nv">network</span><span class="o">=</span>vpc-c,subnet<span class="o">=</span>subnet-c<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="w">  </span>--zone<span class="o">=</span>us-central1-a
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="c1"># VPC Network Peering</span>
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>networks<span class="w"> </span>peerings<span class="w"> </span>create<span class="w"> </span>peer-a-to-b<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="w">  </span>--network<span class="o">=</span>vpc-a<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a><span class="w">  </span>--peer-network<span class="o">=</span>vpc-b<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a><span class="w">  </span>--peer-project<span class="o">=</span>project-b
+<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a>
+<a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a><span class="c1"># Enable VPC Flow Logs on a subnet</span>
+<a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>networks<span class="w"> </span>subnets<span class="w"> </span>update<span class="w"> </span>my-subnet<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a><span class="w">  </span>--region<span class="o">=</span>us-central1<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a><span class="w">  </span>--enable-flow-logs<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a><span class="w">  </span>--logging-aggregation-interval<span class="o">=</span>interval-5-sec<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-28" name="__codelineno-15-28" href="#__codelineno-15-28"></a><span class="w">  </span>--logging-flow-sampling<span class="o">=</span><span class="m">0</span>.5
+<a id="__codelineno-15-29" name="__codelineno-15-29" href="#__codelineno-15-29"></a>
+<a id="__codelineno-15-30" name="__codelineno-15-30" href="#__codelineno-15-30"></a><span class="c1"># Connectivity Test</span>
+<a id="__codelineno-15-31" name="__codelineno-15-31" href="#__codelineno-15-31"></a>gcloud<span class="w"> </span>network-management<span class="w"> </span>connectivity-tests<span class="w"> </span>create<span class="w"> </span>my-test<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-32" name="__codelineno-15-32" href="#__codelineno-15-32"></a><span class="w">  </span>--source-instance<span class="o">=</span>VM-A<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-33" name="__codelineno-15-33" href="#__codelineno-15-33"></a><span class="w">  </span>--destination-instance<span class="o">=</span>VM-B<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-34" name="__codelineno-15-34" href="#__codelineno-15-34"></a><span class="w">  </span>--protocol<span class="o">=</span>TCP<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-15-35" name="__codelineno-15-35" href="#__codelineno-15-35"></a><span class="w">  </span>--destination-port<span class="o">=</span><span class="m">443</span>
+</code></pre></div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

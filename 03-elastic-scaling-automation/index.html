@@ -1,0 +1,3155 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Structured study notes for the Google Professional Cloud Architect exam">
+      
+      
+        <meta name="author" content="PCA Candidate">
+      
+      
+        <link rel="canonical" href="https://Tanablinds.github.io/Professional_cloud_architect/03-elastic-scaling-automation/">
+      
+      
+        <link rel="prev" href="../02-essential-core-services/">
+      
+      
+        <link rel="next" href="../09-kubernetes-engine-gke/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>GCP Elastic Cloud Infrastructure — Scaling & Automation - GCP Professional Cloud Architect Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#gcp-elastic-cloud-infrastructure-scaling-automation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="GCP Professional Cloud Architect Notes" class="md-header__button md-logo" aria-label="GCP Professional Cloud Architect Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GCP Professional Cloud Architect Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              GCP Elastic Cloud Infrastructure — Scaling & Automation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Tanablinds/Professional_cloud_architect" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Tanablinds/Professional_cloud_architect
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../01-cloud-fundamentals-core-infrastructure/" class="md-tabs__link">
+          
+  
+  
+  Foundations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Compute & Scaling
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../04-network-fundamentals/" class="md-tabs__link">
+          
+  
+  
+  Networking
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../07-managing-security-gcp/" class="md-tabs__link">
+          
+  
+  
+  Security & Operations
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="GCP Professional Cloud Architect Notes" class="md-nav__button md-logo" aria-label="GCP Professional Cloud Architect Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GCP Professional Cloud Architect Notes
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Tanablinds/Professional_cloud_architect" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Tanablinds/Professional_cloud_architect
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foundations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Foundations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-cloud-fundamentals-core-infrastructure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    01 · Cloud Fundamentals & Core Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-essential-core-services/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    02 · Essential Core Services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compute & Scaling
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Compute & Scaling
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    03 · Elastic Scaling & Automation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    03 · Elastic Scaling & Automation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-module-covers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📦 What This Module Covers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-1-interconnecting-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 1 — Interconnecting Networks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 1 — Interconnecting Networks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-5-ways-to-connect-to-google-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 5 Ways to Connect to Google Cloud
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interconnect-options-compared" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Interconnect Options Compared
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#peering-options-compared" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Peering Options Compared
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision-trees-choosing-a-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decision Trees: Choosing a Connection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision Trees: Choosing a Connection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connect-on-premises-to-google-cloud-vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connect on-premises to Google Cloud VPC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connect-to-google-workspace-public-apis-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connect to Google Workspace / public APIs only
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connect-google-cloud-to-another-cloud-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connect Google Cloud to another cloud provider
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ha-vpn-vs-classic-vpn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HA VPN vs Classic VPN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shared-vpc-vs-vpc-network-peering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared VPC vs VPC Network Peering
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-2-load-balancing-autoscaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 2 — Load Balancing &amp; Autoscaling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 2 — Load Balancing &amp; Autoscaling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#managed-instance-groups-migs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Managed Instance Groups (MIGs)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Managed Instance Groups (MIGs)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-migs-give-you" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What MIGs give you
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mig-creation-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MIG Creation Steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoscaling-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Autoscaling Policies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-balancer-decision-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Load Balancer Decision Framework
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="⚖️ Load Balancer Decision Framework">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-what-traffic-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — What traffic type?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-external-or-internal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — External or Internal?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-global-or-regional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Global or Regional?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-proxy-or-passthrough-network-lb-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Proxy or Passthrough? (Network LB only)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#full-load-balancer-comparison-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Full Load Balancer Comparison Table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-load-balancing-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Load Balancing Concepts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Load Balancing Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#network-endpoint-groups-negs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Endpoint Groups (NEGs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-cdn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud CDN
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backend-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-3-infrastructure-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 3 — Infrastructure Automation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 3 — Infrastructure Automation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-infrastructure-as-code-iac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Infrastructure as Code (IaC)?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terraform-on-gcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terraform on GCP
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Terraform on GCP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Concepts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hcl-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HCL Syntax
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terraform-lifecycle-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terraform Lifecycle Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iac-tools-supported-by-gcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IaC Tools Supported by GCP
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#google-cloud-marketplace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Google Cloud Marketplace
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-4-managed-services-data-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 4 — Managed Services (Data Processing)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 4 — Managed Services (Data Processing)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bigquery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BigQuery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dataflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dataflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dataflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dataflow-architecture-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dataflow Architecture Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dataprep-by-trifacta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dataprep (by Trifacta)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dataproc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dataproc
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dataflow-vs-dataproc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Dataflow vs Dataproc
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#full-data-service-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Full Data Service Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pca-exam-scenarios-to-know" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 PCA Exam Scenarios to Know
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-cli-terraform-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔗 Key CLI &amp; Terraform Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-kubernetes-engine-gke/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    09 · Kubernetes Engine (GKE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-terraform-gcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10 · Terraform on GCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Networking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Networking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-network-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    04 · Network Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-network-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 · Network Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-hybrid-multicloud-connectivity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06 · Hybrid & Multicloud Connectivity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security & Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Security & Operations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-managing-security-gcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    07 · Managing Security on GCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-logging-monitoring-gcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11 · Logging & Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-reliable-infrastructure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13 · Reliable Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-module-covers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📦 What This Module Covers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-1-interconnecting-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 1 — Interconnecting Networks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 1 — Interconnecting Networks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-5-ways-to-connect-to-google-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 5 Ways to Connect to Google Cloud
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interconnect-options-compared" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Interconnect Options Compared
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#peering-options-compared" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Peering Options Compared
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#decision-trees-choosing-a-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Decision Trees: Choosing a Connection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Decision Trees: Choosing a Connection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#connect-on-premises-to-google-cloud-vpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connect on-premises to Google Cloud VPC
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connect-to-google-workspace-public-apis-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connect to Google Workspace / public APIs only
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connect-google-cloud-to-another-cloud-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connect Google Cloud to another cloud provider
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ha-vpn-vs-classic-vpn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HA VPN vs Classic VPN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shared-vpc-vs-vpc-network-peering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Shared VPC vs VPC Network Peering
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-2-load-balancing-autoscaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 2 — Load Balancing &amp; Autoscaling
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 2 — Load Balancing &amp; Autoscaling">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#managed-instance-groups-migs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Managed Instance Groups (MIGs)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Managed Instance Groups (MIGs)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-migs-give-you" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What MIGs give you
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mig-creation-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MIG Creation Steps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoscaling-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Autoscaling Policies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-balancer-decision-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Load Balancer Decision Framework
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="⚖️ Load Balancer Decision Framework">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-what-traffic-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — What traffic type?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-external-or-internal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — External or Internal?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-global-or-regional" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Global or Regional?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-proxy-or-passthrough-network-lb-only" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Proxy or Passthrough? (Network LB only)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#full-load-balancer-comparison-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Full Load Balancer Comparison Table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-load-balancing-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Load Balancing Concepts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Key Load Balancing Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#network-endpoint-groups-negs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Network Endpoint Groups (NEGs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-cdn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud CDN
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backend-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backend Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-3-infrastructure-automation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 3 — Infrastructure Automation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 3 — Infrastructure Automation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-infrastructure-as-code-iac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Infrastructure as Code (IaC)?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terraform-on-gcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terraform on GCP
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Terraform on GCP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Concepts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hcl-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HCL Syntax
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terraform-lifecycle-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terraform Lifecycle Commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iac-tools-supported-by-gcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IaC Tools Supported by GCP
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#google-cloud-marketplace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Google Cloud Marketplace
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-4-managed-services-data-processing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 4 — Managed Services (Data Processing)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 4 — Managed Services (Data Processing)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bigquery" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        BigQuery
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dataflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dataflow
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dataflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dataflow-architecture-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dataflow Architecture Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dataprep-by-trifacta" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dataprep (by Trifacta)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dataproc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dataproc
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dataflow-vs-dataproc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Dataflow vs Dataproc
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#full-data-service-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Full Data Service Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pca-exam-scenarios-to-know" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 PCA Exam Scenarios to Know
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-cli-terraform-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔗 Key CLI &amp; Terraform Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="gcp-elastic-cloud-infrastructure-scaling-automation">⚖️ GCP Elastic Cloud Infrastructure: Scaling &amp; Automation</h1>
+<blockquote>
+<p><strong>Note Type:</strong> Compare &amp; Choose<br />
+<strong>Why this type?</strong> Every module in this PDF is structured around decision frameworks — comparing connectivity options, load balancer types, autoscaling policies, IaC tools, and data processing services. The material is built for choosing the right option given requirements.</p>
+</blockquote>
+<hr />
+<h2 id="what-this-module-covers">📦 What This Module Covers</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Module</th>
+<th>Decision Theme</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Interconnecting Networks</td>
+<td>Which connectivity option fits your hybrid/multi-cloud need</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Load Balancing &amp; Autoscaling</td>
+<td>Which load balancer type and autoscaling policy to use</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Infrastructure Automation</td>
+<td>Terraform IaC patterns and Cloud Marketplace</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Managed Services</td>
+<td>BigQuery, Dataflow, Dataprep, Dataproc — when to use each</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="module-1-interconnecting-networks">Module 1 — Interconnecting Networks</h2>
+<h3 id="the-5-ways-to-connect-to-google-cloud">The 5 Ways to Connect to Google Cloud</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>On-premises / Other Cloud → Google Cloud
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  ├── Cloud VPN            (encrypted, over internet)
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  ├── Dedicated Interconnect (physical direct connection)
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  ├── Partner Interconnect   (via service provider)
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  ├── Cross-Cloud Interconnect (to another cloud provider)
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  ├── Direct Peering         (Google public IPs, no SLA)
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  └── Carrier Peering        (via ISP, Google public IPs, no SLA)
+</code></pre></div>
+<hr />
+<h3 id="interconnect-options-compared">⚖️ Interconnect Options Compared</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Bandwidth</th>
+<th>Access Type</th>
+<th>Requires</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cloud VPN</strong></td>
+<td>1.5–3 Gbps/tunnel</td>
+<td>Internal RFC1918 IPs via VPC</td>
+<td>VPN device on-prem</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td><strong>Dedicated Interconnect</strong></td>
+<td>10 or 100 Gbps/link (up to 8 links)</td>
+<td>Internal RFC1918 IPs via VPC</td>
+<td>Colocation at Google-supported facility</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td><strong>Partner Interconnect</strong></td>
+<td>50 Mbps – 50 Gbps/connection</td>
+<td>Internal RFC1918 IPs via VPC</td>
+<td>Service provider relationship</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td><strong>Cross-Cloud Interconnect</strong></td>
+<td>10 or 100 Gbps/connection</td>
+<td>Internal RFC1918 IPs via VPC</td>
+<td>Ports at both Google Cloud + remote cloud provider</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td><strong>Direct Peering</strong></td>
+<td>10 Gbps/link</td>
+<td>Google <strong>public</strong> IPs only</td>
+<td>Connection at Google Cloud PoP</td>
+<td>❌ No SLA</td>
+</tr>
+<tr>
+<td><strong>Carrier Peering</strong></td>
+<td>Varies by ISP</td>
+<td>Google <strong>public</strong> IPs only</td>
+<td>Service provider</td>
+<td>❌ No SLA</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Key split:</strong> Interconnect options = private RFC1918 VPC access + SLA.<br />
+Peering options = Google public IPs only, no SLA.</p>
+</blockquote>
+<hr />
+<h3 id="peering-options-compared">⚖️ Peering Options Compared</h3>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Connection</th>
+<th>Capacity</th>
+<th>Access</th>
+<th>SLA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Direct Peering</strong></td>
+<td>Direct BGP exchange at Google PoP</td>
+<td>10 Gbps/link</td>
+<td>All Google services (public IPs)</td>
+<td>❌ No</td>
+</tr>
+<tr>
+<td><strong>Carrier Peering</strong></td>
+<td>Through ISP to Google's network</td>
+<td>Varies</td>
+<td>Google Workspace, APIs (public IPs)</td>
+<td>❌ No</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 Google recommends <strong>Cloud Interconnect over peering</strong> for production workloads. Use peering only to access Workspace/YouTube/APIs without needing VPC private IP access.</p>
+</blockquote>
+<hr />
+<h3 id="decision-trees-choosing-a-connection">Decision Trees: Choosing a Connection</h3>
+<h4 id="connect-on-premises-to-google-cloud-vpc">Connect on-premises to Google Cloud VPC</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Need dedicated enterprise-grade connection?
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>├── YES, can colocate at Google facility  →  Dedicated Interconnect
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>├── YES, no colocation available          →  Partner Interconnect
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>└── NO (lower cost / dev/test / encrypt)  →  Cloud VPN
+</code></pre></div>
+<h4 id="connect-to-google-workspace-public-apis-only">Connect to Google Workspace / public APIs only</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Meet Google&#39;s Direct Peering requirements?
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>├── YES  →  Direct Peering
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>└── NO   →  Carrier Peering
+</code></pre></div>
+<h4 id="connect-google-cloud-to-another-cloud-provider">Connect Google Cloud to another cloud provider</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>→ Cross-Cloud Interconnect
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  (dedicated physical connection between VPCs across clouds)
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  Options: Google-managed routing (Cloud VPN) OR self-managed connectivity
+</code></pre></div>
+<hr />
+<h3 id="ha-vpn-vs-classic-vpn">HA VPN vs Classic VPN</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Classic VPN</strong></th>
+<th><strong>HA VPN</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tunnels</td>
+<td>1 tunnel, 1 external IP</td>
+<td>2 tunnels, 2 external IPs</td>
+</tr>
+<tr>
+<td>SLA</td>
+<td>99.9%</td>
+<td><strong>99.99%</strong></td>
+</tr>
+<tr>
+<td>Routing</td>
+<td>Static or dynamic</td>
+<td>Dynamic (BGP required)</td>
+</tr>
+<tr>
+<td>Best for</td>
+<td>Dev/test, simple setups</td>
+<td>Production HA hybrid connectivity</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cloud Router</strong> enables <strong>dynamic routing (BGP)</strong> for HA VPN — automatically propagates route changes between your on-prem and GCP networks without manual static route updates.</p>
+<hr />
+<h3 id="shared-vpc-vs-vpc-network-peering">Shared VPC vs VPC Network Peering</h3>
+<table>
+<thead>
+<tr>
+<th>Consideration</th>
+<th><strong>Shared VPC</strong></th>
+<th><strong>VPC Network Peering</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Across organisations</td>
+<td>❌ No</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>Within same project</td>
+<td>❌ No</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>Cross-project, same org</td>
+<td>✅ Yes</td>
+<td>✅ Yes</td>
+</tr>
+<tr>
+<td>Network administration</td>
+<td>Centralised (one host VPC)</td>
+<td>Decentralised (each VPC manages itself)</td>
+</tr>
+<tr>
+<td>Firewall rules</td>
+<td>Managed centrally in host VPC</td>
+<td>Each VPC maintains its own firewall</td>
+</tr>
+<tr>
+<td>Use case</td>
+<td>Enterprise with central networking team</td>
+<td>SaaS provider ↔ customer, separate admin domains</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Shared VPC:</strong> Host project shares its VPC with service projects. One network team controls security policy centrally.</p>
+<p><strong>VPC Peering:</strong> Two VPCs exchange routes privately without traversing the public internet. No SLA overhead, no VPN latency. Each side controls its own firewall.</p>
+<hr />
+<h2 id="module-2-load-balancing-autoscaling">Module 2 — Load Balancing &amp; Autoscaling</h2>
+<h3 id="managed-instance-groups-migs">Managed Instance Groups (MIGs)</h3>
+<p>A <strong>MIG</strong> is a collection of identical VM instances managed as one entity via an <strong>instance template</strong>.</p>
+<h4 id="what-migs-give-you">What MIGs give you</h4>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Auto-healing</strong></td>
+<td>Detects unhealthy instances via health check → auto-recreates</td>
+</tr>
+<tr>
+<td><strong>Autoscaling</strong></td>
+<td>Add/remove instances based on load signal</td>
+</tr>
+<tr>
+<td><strong>Rolling updates</strong></td>
+<td>Update all instances with a new template, zero downtime</td>
+</tr>
+<tr>
+<td><strong>Load balancing integration</strong></td>
+<td>Register MIG as a backend for any Cloud LB</td>
+</tr>
+<tr>
+<td><strong>Zone distribution</strong></td>
+<td>Regional MIGs span multiple zones → survive zonal failure</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>✅ <strong>Always prefer regional MIGs</strong> over zonal for production — protects against zonal outage.</p>
+</blockquote>
+<h4 id="mig-creation-steps">MIG Creation Steps</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>1. Create instance template (machine type, disk, network, startup script)
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>2. Create MIG → select template
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>3. Choose: stateless (web, batch) OR stateful (DB, legacy app)
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>4. Choose: single-zone OR regional (multi-zone)
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>5. Configure autoscaling policy
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>6. Attach health check
+</code></pre></div>
+<hr />
+<h3 id="autoscaling-policies">Autoscaling Policies</h3>
+<table>
+<thead>
+<tr>
+<th>Policy</th>
+<th>Signal</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CPU utilisation</strong></td>
+<td>Average CPU % across MIG</td>
+<td>General compute workloads</td>
+</tr>
+<tr>
+<td><strong>Load balancing capacity</strong></td>
+<td>LB utilisation target</td>
+<td>HTTP/HTTPS serving workloads</td>
+</tr>
+<tr>
+<td><strong>Monitoring metric</strong></td>
+<td>Any Cloud Monitoring metric (built-in or custom)</td>
+<td>Custom app metrics (e.g., active users, queue depth)</td>
+</tr>
+<tr>
+<td><strong>Queue-based (Pub/Sub)</strong></td>
+<td>Number of undelivered messages</td>
+<td>Batch processing, async pipelines</td>
+</tr>
+<tr>
+<td><strong>Schedule-based</strong></td>
+<td>Time/date/recurrence</td>
+<td>Predictable traffic patterns (e.g., business hours)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 Use <strong>custom metrics</strong> when CPU/LB capacity don't correlate well with actual load (e.g., a game server where active session count matters more than CPU).</p>
+</blockquote>
+<hr />
+<h3 id="load-balancer-decision-framework">⚖️ Load Balancer Decision Framework</h3>
+<h4 id="step-1-what-traffic-type">Step 1 — What traffic type?</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>HTTP or HTTPS?   →  Application Load Balancer  (Layer 7)
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>TCP/UDP/other?   →  Network Load Balancer      (Layer 4)
+</code></pre></div>
+<h4 id="step-2-external-or-internal">Step 2 — External or Internal?</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Internet-facing?  →  External
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>Within VPC only?  →  Internal
+</code></pre></div>
+<h4 id="step-3-global-or-regional">Step 3 — Global or Regional?</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Backends in multiple regions / global anycast IP?  →  Global (Premium Tier)
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>Single region only?                                →  Regional (Standard Tier)
+</code></pre></div>
+<h4 id="step-4-proxy-or-passthrough-network-lb-only">Step 4 — Proxy or Passthrough? (Network LB only)</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Need TLS offload / TCP proxy?           →  Proxy Network LB
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Need to preserve client IP / UDP / ESP? →  Passthrough Network LB
+</code></pre></div>
+<hr />
+<h3 id="full-load-balancer-comparison-table">⚖️ Full Load Balancer Comparison Table</h3>
+<table>
+<thead>
+<tr>
+<th>Load Balancer</th>
+<th>Traffic</th>
+<th>Scope</th>
+<th>Scheme</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Global External Application LB</strong></td>
+<td>HTTP/HTTPS</td>
+<td>Global</td>
+<td>EXTERNAL_MANAGED</td>
+<td>Global web apps, multi-region failover, anycast IP</td>
+</tr>
+<tr>
+<td><strong>Regional External Application LB</strong></td>
+<td>HTTP/HTTPS</td>
+<td>Regional</td>
+<td>EXTERNAL_MANAGED</td>
+<td>Single-region HTTPS apps (Standard tier)</td>
+</tr>
+<tr>
+<td><strong>Classic Application LB</strong></td>
+<td>HTTP/HTTPS</td>
+<td>Global/Regional</td>
+<td>EXTERNAL</td>
+<td>Legacy apps (migration path to managed)</td>
+</tr>
+<tr>
+<td><strong>Internal Application LB</strong></td>
+<td>HTTP/HTTPS</td>
+<td>Regional</td>
+<td>INTERNAL_MANAGED</td>
+<td>Internal microservices, service mesh</td>
+</tr>
+<tr>
+<td><strong>Global External Proxy Network LB</strong></td>
+<td>TCP + SSL offload</td>
+<td>Global</td>
+<td>EXTERNAL</td>
+<td>TCP/SSL apps across regions</td>
+</tr>
+<tr>
+<td><strong>Regional External Proxy Network LB</strong></td>
+<td>TCP</td>
+<td>Regional</td>
+<td>EXTERNAL_MANAGED</td>
+<td>Single-region TCP apps</td>
+</tr>
+<tr>
+<td><strong>Internal Proxy Network LB</strong></td>
+<td>TCP</td>
+<td>Regional</td>
+<td>INTERNAL_MANAGED</td>
+<td>Internal TCP services</td>
+</tr>
+<tr>
+<td><strong>External Passthrough Network LB</strong></td>
+<td>TCP/UDP/ESP/ICMP</td>
+<td>Regional</td>
+<td>EXTERNAL</td>
+<td>Preserve client IP, raw protocol support</td>
+</tr>
+<tr>
+<td><strong>Internal Passthrough Network LB</strong></td>
+<td>TCP/UDP</td>
+<td>Regional</td>
+<td>INTERNAL</td>
+<td>Internal services needing client IP preservation</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 <strong>3-tier web services tip:</strong> Combine an <strong>External Application LB</strong> (internet-facing) + <strong>Internal Application LB</strong> (between app and data tier). This keeps backend traffic private.</p>
+</blockquote>
+<hr />
+<h3 id="key-load-balancing-concepts">Key Load Balancing Concepts</h3>
+<h4 id="network-endpoint-groups-negs">Network Endpoint Groups (NEGs)</h4>
+<p>Defines a group of <strong>backend endpoints</strong> more granularly than a full VM.</p>
+<table>
+<thead>
+<tr>
+<th>NEG Type</th>
+<th>Endpoints</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Zonal NEG</strong></td>
+<td>VMs or containers (GKE pods) by IP:port</td>
+<td>Fine-grained container load balancing</td>
+</tr>
+<tr>
+<td><strong>Serverless NEG</strong></td>
+<td>Cloud Run, App Engine, Cloud Functions</td>
+<td>Route LB traffic to serverless backends</td>
+</tr>
+<tr>
+<td><strong>Internet NEG</strong></td>
+<td>External (non-GCP) IP:port</td>
+<td>Hybrid: LB in GCP, backend on-prem</td>
+</tr>
+<tr>
+<td><strong>Private Service Connect NEG</strong></td>
+<td>Published services via PSC</td>
+<td>Service-to-service with private endpoints</td>
+</tr>
+</tbody>
+</table>
+<h4 id="cloud-cdn">Cloud CDN</h4>
+<ul>
+<li>Caches content at Google's global edge PoPs → reduces latency for repeat requests</li>
+<li>Sits in front of <strong>External Application Load Balancer</strong></li>
+<li><strong>Cache modes:</strong></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Behaviour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>USE_ORIGIN_HEADERS</strong></td>
+<td>Respects <code>Cache-Control</code> headers from backend</td>
+</tr>
+<tr>
+<td><strong>CACHE_ALL_STATIC</strong></td>
+<td>Automatically caches static content regardless of headers</td>
+</tr>
+<tr>
+<td><strong>FORCE_CACHE_ALL</strong></td>
+<td>Caches all responses (overrides <code>no-store</code>)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="backend-services">Backend Services</h3>
+<p>A <strong>backend service</strong> defines how the LB distributes traffic to backends.</p>
+<p>Key settings:
+- <strong>Balancing mode:</strong> <code>UTILIZATION</code> (CPU %), <code>RATE</code> (req/sec), <code>CONNECTION</code> (active connections)
+- <strong>Health checks:</strong> Required; defines which backends are healthy
+- <strong>Session affinity:</strong> Stick requests from same client to same backend (cookie, client IP, header)
+- <strong>Timeout:</strong> Backend response timeout</p>
+<hr />
+<h2 id="module-3-infrastructure-automation">Module 3 — Infrastructure Automation</h2>
+<h3 id="why-infrastructure-as-code-iac">Why Infrastructure as Code (IaC)?</h3>
+<table>
+<thead>
+<tr>
+<th>Benefit</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Repeatability</strong></td>
+<td>Same config → identical environments every time</td>
+</tr>
+<tr>
+<td><strong>Idempotency</strong></td>
+<td>Apply same config multiple times, same result</td>
+</tr>
+<tr>
+<td><strong>Dev/Test parity</strong></td>
+<td>Replicate prod in dev with one command</td>
+</tr>
+<tr>
+<td><strong>Disaster recovery</strong></td>
+<td>Config files = runbook for re-deploying everything</td>
+</tr>
+<tr>
+<td><strong>CI/CD integration</strong></td>
+<td>Infra changes go through pull requests and pipelines</td>
+</tr>
+<tr>
+<td><strong>Dependency management</strong></td>
+<td>IaC tools figure out creation order</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="terraform-on-gcp">Terraform on GCP</h3>
+<p>Terraform uses <strong>HashiCorp Configuration Language (HCL)</strong> — declarative, human-readable.</p>
+<h4 id="core-concepts">Core Concepts</h4>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Provider</strong></td>
+<td>Plugin that talks to a cloud API (e.g., <code>google</code> provider)</td>
+</tr>
+<tr>
+<td><strong>Resource</strong></td>
+<td>A GCP object (VM, VPC, firewall, bucket…)</td>
+</tr>
+<tr>
+<td><strong>Variable</strong></td>
+<td>Parameterises your config</td>
+</tr>
+<tr>
+<td><strong>Output</strong></td>
+<td>Exposes values after apply (e.g., IP address)</td>
+</tr>
+<tr>
+<td><strong>Module</strong></td>
+<td>Reusable group of resources</td>
+</tr>
+<tr>
+<td><strong>State file</strong></td>
+<td><code>terraform.tfstate</code> — Terraform's record of what it created</td>
+</tr>
+</tbody>
+</table>
+<h4 id="hcl-syntax">HCL Syntax</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;google_compute_network&quot;</span><span class="w"> </span><span class="nv">&quot;default&quot;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="na">name</span><span class="w">                    </span><span class="o">=</span><span class="w"> </span><span class="nv">var.network_name</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="na">auto_create_subnetworks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">false</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="p">}</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;google_compute_firewall&quot;</span><span class="w"> </span><span class="nv">&quot;allow_http&quot;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">  </span><span class="na">name</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;allow-http&quot;</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">  </span><span class="na">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">google_compute_network.default.name</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+<a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">  </span><span class="nb">allow</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">    </span><span class="na">protocol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tcp&quot;</span>
+<a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">    </span><span class="na">ports</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;80&quot;</span><span class="p">]</span>
+<a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="terraform-lifecycle-commands">Terraform Lifecycle Commands</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>terraform<span class="w"> </span>init<span class="w">    </span><span class="c1"># Download provider plugins, initialise working directory</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>terraform<span class="w"> </span>plan<span class="w">    </span><span class="c1"># Preview changes — what will be created/modified/destroyed</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>terraform<span class="w"> </span>apply<span class="w">   </span><span class="c1"># Execute the plan — provision actual infrastructure</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>terraform<span class="w"> </span>destroy<span class="w"> </span><span class="c1"># Tear down all resources defined in config</span>
+</code></pre></div>
+<blockquote>
+<p>💡 Always run <code>terraform plan</code> before <code>apply</code> — treat it like <code>git diff</code> for infrastructure.</p>
+</blockquote>
+<h4 id="iac-tools-supported-by-gcp">IaC Tools Supported by GCP</h4>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Style</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Terraform</strong></td>
+<td>Declarative (HCL)</td>
+<td>Multi-cloud, most popular, rich ecosystem</td>
+</tr>
+<tr>
+<td><strong>Ansible</strong></td>
+<td>Procedural (YAML)</td>
+<td>Configuration management + provisioning</td>
+</tr>
+<tr>
+<td><strong>Chef / Puppet</strong></td>
+<td>Declarative/procedural</td>
+<td>Legacy enterprise config management</td>
+</tr>
+<tr>
+<td><strong>Packer</strong></td>
+<td>Declarative</td>
+<td>Building machine images (VM, containers)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="google-cloud-marketplace">Google Cloud Marketplace</h3>
+<ul>
+<li>Deploy <strong>production-grade third-party solutions</strong> with one click (LAMP, WordPress, MongoDB, etc.)</li>
+<li>Billed on a <strong>single Google Cloud bill</strong> — no separate vendor invoices</li>
+<li>Solutions can be <strong>managed via Terraform</strong> (infrastructure definitions available)</li>
+<li>Receive <strong>security update notifications</strong> automatically</li>
+</ul>
+<hr />
+<h2 id="module-4-managed-services-data-processing">Module 4 — Managed Services (Data Processing)</h2>
+<h3 id="overview">Overview</h3>
+<p>Managed services exist on a spectrum between <strong>PaaS and SaaS</strong> — you focus on your data pipeline, Google manages the infrastructure.</p>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>What it does</th>
+<th>Open source roots</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>BigQuery</strong></td>
+<td>Serverless data warehouse — SQL analytics at petabyte scale</td>
+<td>N/A (proprietary)</td>
+</tr>
+<tr>
+<td><strong>Dataflow</strong></td>
+<td>Serverless stream + batch data pipeline execution</td>
+<td>Apache Beam</td>
+</tr>
+<tr>
+<td><strong>Dataprep</strong></td>
+<td>Visual data exploration, cleaning, and preparation</td>
+<td>Trifacta Wrangler</td>
+</tr>
+<tr>
+<td><strong>Dataproc</strong></td>
+<td>Managed Spark and Hadoop cluster execution</td>
+<td>Apache Spark / Hadoop</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="bigquery">BigQuery</h3>
+<ul>
+<li><strong>Serverless, fully managed</strong> data warehouse</li>
+<li>Petabyte-scale; sub-second query performance via columnar storage + Dremel</li>
+<li>Standard SQL interface — no DBA required</li>
+<li>Integrated billing, IAM, audit logging</li>
+<li>Supports <strong>BigQuery ML</strong> (train ML models with SQL), <strong>BigQuery BI Engine</strong> (in-memory analysis), <strong>Omni</strong> (query data in S3/Azure)</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1">-- Example: Query across 1TB table with no infrastructure config</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">SELECT</span><span class="w"> </span><span class="n">department</span><span class="p">,</span><span class="w"> </span><span class="k">SUM</span><span class="p">(</span><span class="n">revenue</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">total</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">FROM</span><span class="w"> </span><span class="o">`</span><span class="n">project</span><span class="p">.</span><span class="n">dataset</span><span class="p">.</span><span class="n">sales</span><span class="o">`</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="k">WHERE</span><span class="w"> </span><span class="k">EXTRACT</span><span class="p">(</span><span class="k">YEAR</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="nb">date</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2024</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">department</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="k">DESC</span><span class="p">;</span>
+</code></pre></div>
+<hr />
+<h3 id="dataflow">Dataflow</h3>
+<ul>
+<li><strong>Serverless, autoscaling</strong> pipeline execution engine</li>
+<li>Built on <strong>Apache Beam SDK</strong> (Java, Python, SQL)</li>
+<li>Handles both <strong>stream</strong> (real-time) and <strong>batch</strong> (historical) with the same pipeline code</li>
+<li>Scales automatically to millions of queries per second</li>
+<li>Integrates with Pub/Sub (input), BigQuery/Bigtable (output), Cloud Monitoring (observability)</li>
+</ul>
+<h4 id="dataflow-architecture-pattern">Dataflow Architecture Pattern</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Source         →   Transform (Beam SDK)   →   Sink
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>Pub/Sub            Filter, enrich,            BigQuery
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>Cloud Storage      aggregate, join            Bigtable
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>Apache Kafka       window operations          Cloud Storage
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>Datastore                                     Vertex AI
+</code></pre></div>
+<hr />
+<h3 id="dataprep-by-trifacta">Dataprep (by Trifacta)</h3>
+<ul>
+<li>Visual, no-code interface for <strong>data cleaning and preparation</strong></li>
+<li>Serverless, scales automatically</li>
+<li>Auto-suggests transformations based on data patterns</li>
+<li>Auto-detects schema, data types, joins, anomalies</li>
+<li>Outputs to BigQuery or Cloud Storage via Dataflow pipeline</li>
+<li>Partner service (Trifacta) — no separate license or install</li>
+</ul>
+<hr />
+<h3 id="dataproc">Dataproc</h3>
+<ul>
+<li>Managed <strong>Apache Spark and Hadoop</strong> clusters</li>
+<li>Fast cluster start/scale/shutdown: <strong>&lt; 90 seconds</strong></li>
+<li>Per-second billing + preemptible VM support → cheapest Spark/Hadoop in the cloud</li>
+<li>Built-in integration: BigQuery, Cloud Storage, Bigtable, Cloud Logging, Cloud Monitoring</li>
+<li>No code changes needed if you're already running Spark/Hadoop/Pig/Hive</li>
+</ul>
+<hr />
+<h3 id="dataflow-vs-dataproc">⚖️ Dataflow vs Dataproc</h3>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>If YES →</th>
+<th>If NO →</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dependencies on Spark/Hadoop ecosystem tools?</td>
+<td><strong>Dataproc</strong></td>
+<td>Continue</td>
+</tr>
+<tr>
+<td>Prefer manual cluster control (DevOps model)?</td>
+<td><strong>Dataproc</strong></td>
+<td><strong>Dataflow</strong></td>
+</tr>
+<tr>
+<td>Want fully serverless, no cluster management?</td>
+<td><strong>Dataflow</strong></td>
+<td>Continue</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Have Hadoop/Spark dependencies?
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>├── YES  →  Dataproc
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>└── NO
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>      └── Manual cluster control preferred?
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>            ├── YES  →  Dataproc
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>            └── NO   →  Dataflow
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Dataflow</strong></th>
+<th><strong>Dataproc</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cluster management</td>
+<td>❌ None (serverless)</td>
+<td>✅ You manage clusters</td>
+</tr>
+<tr>
+<td>Programming model</td>
+<td>Apache Beam (unified batch + stream)</td>
+<td>Spark / Hadoop / Pig / Hive</td>
+</tr>
+<tr>
+<td>Best for</td>
+<td>New pipelines, unified stream+batch</td>
+<td>Migrating existing Spark/Hadoop jobs</td>
+</tr>
+<tr>
+<td>Scaling</td>
+<td>Fully automatic</td>
+<td>Manual or autoscaling</td>
+</tr>
+<tr>
+<td>Cost model</td>
+<td>Per vCPU/hr while pipeline runs</td>
+<td>Per-second billing, supports preemptibles</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="full-data-service-summary">⚖️ Full Data Service Summary</h3>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Service</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Run SQL analytics on petabyte data</td>
+<td><strong>BigQuery</strong></td>
+</tr>
+<tr>
+<td>Build a streaming or batch pipeline (new)</td>
+<td><strong>Dataflow</strong> (Apache Beam)</td>
+</tr>
+<tr>
+<td>Migrate existing Spark/Hadoop workloads</td>
+<td><strong>Dataproc</strong></td>
+</tr>
+<tr>
+<td>Clean and prepare raw data visually</td>
+<td><strong>Dataprep</strong></td>
+</tr>
+<tr>
+<td>Real-time ingestion pipeline → BigQuery</td>
+<td>Pub/Sub → <strong>Dataflow</strong> → BigQuery</td>
+</tr>
+<tr>
+<td>Ad-hoc SQL on semi-structured data</td>
+<td><strong>BigQuery</strong></td>
+</tr>
+<tr>
+<td>ML model training on structured data with SQL</td>
+<td><strong>BigQuery ML</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="pca-exam-scenarios-to-know">🎯 PCA Exam Scenarios to Know</h2>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Low-cost, encrypted hybrid connection for dev/test</td>
+<td>Cloud VPN</td>
+</tr>
+<tr>
+<td>Enterprise connection; 10 Gbps+; colocation available</td>
+<td>Dedicated Interconnect</td>
+</tr>
+<tr>
+<td>Enterprise connection; no colocation; need SLA</td>
+<td>Partner Interconnect</td>
+</tr>
+<tr>
+<td>Connect GCP VPC to AWS VPC with dedicated bandwidth</td>
+<td>Cross-Cloud Interconnect</td>
+</tr>
+<tr>
+<td>Two VPCs in different orgs need private RFC1918 comms</td>
+<td>VPC Network Peering</td>
+</tr>
+<tr>
+<td>Central network team managing multiple project networks</td>
+<td>Shared VPC</td>
+</tr>
+<tr>
+<td>Global HTTP/S app with multi-region failover</td>
+<td>Global External Application LB (Premium Tier)</td>
+</tr>
+<tr>
+<td>Internal microservice-to-microservice HTTP traffic</td>
+<td>Internal Application LB</td>
+</tr>
+<tr>
+<td>Preserve client IP address in load balancing</td>
+<td>Passthrough Network Load Balancer</td>
+</tr>
+<tr>
+<td>VM fleet needs to scale based on Pub/Sub queue depth</td>
+<td>MIG + autoscaling with queue-based (Pub/Sub) policy</td>
+</tr>
+<tr>
+<td>Deploy identical infra across dev/staging/prod consistently</td>
+<td>Terraform (IaC)</td>
+</tr>
+<tr>
+<td>Existing Spark ETL job; migrate to GCP with minimal changes</td>
+<td>Dataproc</td>
+</tr>
+<tr>
+<td>New pipeline ingesting Pub/Sub events → BigQuery</td>
+<td>Dataflow (Apache Beam)</td>
+</tr>
+<tr>
+<td>Non-technical analyst needs to clean raw CSV data</td>
+<td>Dataprep</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="key-cli-terraform-reference">🔗 Key CLI &amp; Terraform Reference</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># HA VPN</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>vpn-gateways<span class="w"> </span>create<span class="w"> </span>ha-vpn-gw<span class="w"> </span>--network<span class="o">=</span>my-vpc<span class="w"> </span>--region<span class="o">=</span>us-central1
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>vpn-tunnels<span class="w"> </span>create<span class="w"> </span>tunnel-1<span class="w"> </span>--peer-gcp-gateway<span class="o">=</span>PEER_GW<span class="w"> </span>--vpn-gateway<span class="o">=</span>ha-vpn-gw
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="c1"># MIG</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>instance-templates<span class="w"> </span>create<span class="w"> </span>my-template<span class="w"> </span>--machine-type<span class="o">=</span>e2-medium
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>instance-groups<span class="w"> </span>managed<span class="w"> </span>create<span class="w"> </span>my-mig<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">  </span>--template<span class="o">=</span>my-template<span class="w"> </span>--size<span class="o">=</span><span class="m">3</span><span class="w"> </span>--zone<span class="o">=</span>us-central1-a
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="c1"># Autoscaling</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>instance-groups<span class="w"> </span>managed<span class="w"> </span>set-autoscaling<span class="w"> </span>my-mig<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">  </span>--max-num-replicas<span class="o">=</span><span class="m">10</span><span class="w"> </span>--target-cpu-utilization<span class="o">=</span><span class="m">0</span>.75
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="c1"># Terraform</span>
+<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a>terraform<span class="w"> </span>init<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>terraform<span class="w"> </span>plan<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>terraform<span class="w"> </span>apply
+<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>
+<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="c1"># Dataproc</span>
+<a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a>gcloud<span class="w"> </span>dataproc<span class="w"> </span>clusters<span class="w"> </span>create<span class="w"> </span>my-cluster<span class="w"> </span>--region<span class="o">=</span>us-central1<span class="w"> </span>--num-workers<span class="o">=</span><span class="m">2</span>
+<a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a>gcloud<span class="w"> </span>dataproc<span class="w"> </span><span class="nb">jobs</span><span class="w"> </span>submit<span class="w"> </span>spark<span class="w"> </span>--cluster<span class="o">=</span>my-cluster<span class="w"> </span>--jar<span class="o">=</span>my-job.jar
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># Terraform: Auto-mode VPC + Firewall</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;google_compute_network&quot;</span><span class="w"> </span><span class="nv">&quot;mynetwork&quot;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span><span class="na">name</span><span class="w">                    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;mynetwork&quot;</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span><span class="na">auto_create_subnetworks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="p">}</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;google_compute_firewall&quot;</span><span class="w"> </span><span class="nv">&quot;allow_http&quot;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">  </span><span class="na">name</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;mynetwork-allow-http&quot;</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">  </span><span class="na">network</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">google_compute_network.mynetwork.self_link</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="w">  </span><span class="nb">allow</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="w">    </span><span class="na">protocol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tcp&quot;</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="w">    </span><span class="na">ports</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;80&quot;</span><span class="p">]</span>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="w">  </span><span class="na">source_ranges</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;0.0.0.0/0&quot;</span><span class="p">]</span>
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="p">}</span>
+</code></pre></div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

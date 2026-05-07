@@ -1,0 +1,3616 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Structured study notes for the Google Professional Cloud Architect exam">
+      
+      
+        <meta name="author" content="PCA Candidate">
+      
+      
+        <link rel="canonical" href="https://Tanablinds.github.io/Professional_cloud_architect/02-essential-core-services/">
+      
+      
+        <link rel="prev" href="../01-cloud-fundamentals-core-infrastructure/">
+      
+      
+        <link rel="next" href="../03-elastic-scaling-automation/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>GCP Essential Cloud Infrastructure — Core Services - GCP Professional Cloud Architect Notes</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#gcp-essential-cloud-infrastructure-core-services" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="GCP Professional Cloud Architect Notes" class="md-header__button md-logo" aria-label="GCP Professional Cloud Architect Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GCP Professional Cloud Architect Notes
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              GCP Essential Cloud Infrastructure — Core Services
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Tanablinds/Professional_cloud_architect" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Tanablinds/Professional_cloud_architect
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../01-cloud-fundamentals-core-infrastructure/" class="md-tabs__link">
+          
+  
+  
+  Foundations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../03-elastic-scaling-automation/" class="md-tabs__link">
+          
+  
+  
+  Compute & Scaling
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../04-network-fundamentals/" class="md-tabs__link">
+          
+  
+  
+  Networking
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../07-managing-security-gcp/" class="md-tabs__link">
+          
+  
+  
+  Security & Operations
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="GCP Professional Cloud Architect Notes" class="md-nav__button md-logo" aria-label="GCP Professional Cloud Architect Notes" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GCP Professional Cloud Architect Notes
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Tanablinds/Professional_cloud_architect" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Tanablinds/Professional_cloud_architect
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foundations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Foundations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-cloud-fundamentals-core-infrastructure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    01 · Cloud Fundamentals & Core Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    02 · Essential Core Services
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    02 · Essential Core Services
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-module-covers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📦 What This Module Covers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-1-identity-and-access-management-iam" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 1 — Identity and Access Management (IAM)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 1 — Identity and Access Management (IAM)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iam-object-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IAM Object Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iam-resource-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IAM Resource Hierarchy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iam-role-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IAM Role Types
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IAM Role Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-basic-roles-avoid-in-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Basic Roles — Avoid in production
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-predefined-roles-recommended-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Predefined Roles — Recommended default
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-custom-roles-use-when-predefined-doesnt-fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Custom Roles — Use when predefined doesn't fit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iam-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IAM Conditions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#organisation-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Organisation Policies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-accounts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service Accounts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Service Accounts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#types-of-service-accounts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Types of Service Accounts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-account-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service Account Keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-scopes-for-default-sa-on-vms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access Scopes (for default SA on VMs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iam-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IAM Best Practices
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#identity-aware-proxy-iap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Identity-Aware Proxy (IAP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sso-and-directory-sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSO and Directory Sync
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-2-storage-and-database-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 2 — Storage and Database Services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 2 — Storage and Database Services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#storage-decision-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Storage Decision Tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-storage-object-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud Storage (Object Storage)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cloud Storage (Object Storage)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storage-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage Classes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoclass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Autoclass
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access Control
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#object-versioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Object Versioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#object-lifecycle-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Object Lifecycle Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-import-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Import Options
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filestore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filestore
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud SQL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cloud SQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Capabilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connecting-to-cloud-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connecting to Cloud SQL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-spanner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud Spanner
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cloud Spanner">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alloydb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AlloyDB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firestore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firestore
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Firestore">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bigtable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bigtable
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bigtable">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#internal-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memorystore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memorystore
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storage-database-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Storage &amp; Database Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-3-resource-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 3 — Resource Management
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 3 — Resource Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resource-hierarchy-billing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resource Hierarchy &amp; Billing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#labels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Labels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#labels-vs-network-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Labels vs Network Tags
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quotas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quotas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#budgets-billing-alerts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Budgets &amp; Billing Alerts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-4-resource-monitoring-cloud-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 4 — Resource Monitoring (Cloud Observability)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 4 — Resource Monitoring (Cloud Observability)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#google-cloud-observability-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Google Cloud Observability Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud Monitoring
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cloud Monitoring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metrics-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metrics Scope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Collection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dashboards-alerting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dashboards &amp; Alerting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoscaling-with-custom-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Autoscaling with Custom Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud Logging
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cloud Logging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#log-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Log Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#log-routing-and-export" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Log Routing and Export
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-reporting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Reporting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-trace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud Trace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-profiler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud Profiler
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pca-exam-scenarios-to-know" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 PCA Exam Scenarios to Know
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-cli-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔗 Key CLI Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Compute & Scaling
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Compute & Scaling
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-elastic-scaling-automation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    03 · Elastic Scaling & Automation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-kubernetes-engine-gke/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    09 · Kubernetes Engine (GKE)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-terraform-gcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10 · Terraform on GCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Networking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Networking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-network-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    04 · Network Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-network-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    05 · Network Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-hybrid-multicloud-connectivity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    06 · Hybrid & Multicloud Connectivity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security & Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Security & Operations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-managing-security-gcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    07 · Managing Security on GCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-logging-monitoring-gcp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11 · Logging & Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-reliable-infrastructure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    13 · Reliable Infrastructure
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-this-module-covers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        📦 What This Module Covers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-1-identity-and-access-management-iam" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 1 — Identity and Access Management (IAM)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 1 — Identity and Access Management (IAM)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#iam-object-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IAM Object Model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iam-resource-hierarchy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IAM Resource Hierarchy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iam-role-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IAM Role Types
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IAM Role Types">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-basic-roles-avoid-in-production" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Basic Roles — Avoid in production
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-predefined-roles-recommended-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Predefined Roles — Recommended default
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-custom-roles-use-when-predefined-doesnt-fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Custom Roles — Use when predefined doesn't fit
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iam-conditions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IAM Conditions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#organisation-policies" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Organisation Policies
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-accounts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service Accounts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Service Accounts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#types-of-service-accounts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Types of Service Accounts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-account-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service Account Keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-scopes-for-default-sa-on-vms" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access Scopes (for default SA on VMs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iam-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IAM Best Practices
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#identity-aware-proxy-iap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Identity-Aware Proxy (IAP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sso-and-directory-sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSO and Directory Sync
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-2-storage-and-database-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 2 — Storage and Database Services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 2 — Storage and Database Services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#storage-decision-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Storage Decision Tree
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-storage-object-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud Storage (Object Storage)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cloud Storage (Object Storage)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storage-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage Classes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoclass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Autoclass
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Access Control
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#object-versioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Object Versioning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#object-lifecycle-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Object Lifecycle Management
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-import-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Import Options
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filestore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filestore
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud SQL
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cloud SQL">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#key-capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key Capabilities
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connecting-to-cloud-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connecting to Cloud SQL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-spanner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud Spanner
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cloud Spanner">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alloydb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AlloyDB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#firestore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Firestore
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Firestore">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bigtable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Bigtable
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bigtable">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#internal-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Internal Architecture
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#memorystore" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memorystore
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storage-database-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚖️ Storage &amp; Database Comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-3-resource-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 3 — Resource Management
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 3 — Resource Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#resource-hierarchy-billing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resource Hierarchy &amp; Billing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#labels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Labels
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#labels-vs-network-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Labels vs Network Tags
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quotas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quotas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#budgets-billing-alerts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Budgets &amp; Billing Alerts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-4-resource-monitoring-cloud-observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module 4 — Resource Monitoring (Cloud Observability)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 4 — Resource Monitoring (Cloud Observability)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#google-cloud-observability-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Google Cloud Observability Overview
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud Monitoring
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cloud Monitoring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metrics-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metrics Scope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-collection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data Collection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dashboards-alerting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dashboards &amp; Alerting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoscaling-with-custom-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Autoscaling with Custom Metrics
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-logging" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud Logging
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cloud Logging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#log-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Log Types
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#log-routing-and-export" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Log Routing and Export
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#error-reporting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error Reporting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-trace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud Trace
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-profiler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud Profiler
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pca-exam-scenarios-to-know" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 PCA Exam Scenarios to Know
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-cli-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔗 Key CLI Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="gcp-essential-cloud-infrastructure-core-services">🏗️ GCP Essential Cloud Infrastructure: Core Services</h1>
+<blockquote>
+<p><strong>Note Type:</strong> Service Blueprint<br />
+<strong>Why this type?</strong> This module is a deep architectural dive into four foundational GCP service areas: IAM internals, Storage and Database services, Resource Management, and Cloud Observability. It focuses on <em>how</em> each service is structured and how components interconnect.</p>
+</blockquote>
+<hr />
+<h2 id="what-this-module-covers">📦 What This Module Covers</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Module</th>
+<th>Key Concepts</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Identity and Access Management (IAM)</td>
+<td>Org hierarchy, role types, service accounts, IAP, org policies, IAM conditions</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Storage and Database Services</td>
+<td>Cloud Storage deep-dive, Filestore, Cloud SQL, Spanner, AlloyDB, Firestore, Bigtable, Memorystore</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Resource Management</td>
+<td>Resource hierarchy, labels vs tags, quotas, billing/budgets</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Resource Monitoring</td>
+<td>Cloud Observability, metrics, dashboards, alerting, logging, Error Reporting, Tracing</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="module-1-identity-and-access-management-iam">Module 1 — Identity and Access Management (IAM)</h2>
+<h3 id="iam-object-model">IAM Object Model</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>IAM Policy = WHO  +  CAN DO WHAT  +  ON WHICH RESOURCE
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>              ↓            ↓                  ↓
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>           Principal     Role             Resource
+</code></pre></div>
+<ul>
+<li><strong>Principal (who):</strong> Google Account, Google Group, Service Account, Cloud Identity domain, <code>allUsers</code>, <code>allAuthenticatedUsers</code></li>
+<li><strong>Role (can do what):</strong> A named collection of permissions</li>
+<li><strong>Resource (which):</strong> Any GCP resource — project, bucket, VM, Pub/Sub topic, dataset</li>
+</ul>
+<hr />
+<h3 id="iam-resource-hierarchy">IAM Resource Hierarchy</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Organization Node  ← root; policies set here flow everywhere
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  └── Folders       ← departments, teams, environments
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>        └── Projects ← trust boundary; billing unit
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>              └── Resources ← VMs, buckets, topics, datasets…
+</code></pre></div>
+<p><strong>Inheritance rule:</strong> Policies are <strong>additive downward</strong> — a role granted at a higher level is inherited by all resources below.<br />
+<strong>Deny policies override allow policies</strong> — IAM evaluates deny rules first, always.</p>
+<hr />
+<h3 id="iam-role-types">IAM Role Types</h3>
+<h4 id="1-basic-roles-avoid-in-production">1. Basic Roles — Avoid in production</h4>
+<p>Applied across <strong>all resources in a project</strong>. Concentric (Owner ⊇ Editor ⊇ Viewer).</p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Capabilities</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Viewer</strong></td>
+<td>Read-only</td>
+</tr>
+<tr>
+<td><strong>Editor</strong></td>
+<td>Read + modify + deploy</td>
+</tr>
+<tr>
+<td><strong>Owner</strong></td>
+<td>Editor + manage IAM + set billing</td>
+</tr>
+<tr>
+<td><strong>Billing Admin</strong></td>
+<td>Billing management only — no resource access</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ Basic roles are too broad for multi-team production environments. Use predefined roles instead.</p>
+</blockquote>
+<h4 id="2-predefined-roles-recommended-default">2. Predefined Roles — Recommended default</h4>
+<p>Service-specific, granular, defined by Google. Applied at project, folder, or org level.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>compute.instanceAdmin  →  [compute.instances.create, .delete, .start, .stop, ...]
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>storage.objectViewer   →  [storage.objects.get, storage.objects.list]
+</code></pre></div>
+<p><strong>Example Compute Engine predefined roles:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>What it grants</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Compute Admin</code></td>
+<td>Full control of all Compute Engine resources</td>
+</tr>
+<tr>
+<td><code>Network Admin</code></td>
+<td>Create/modify/delete network resources (excl. firewall, SSL certs)</td>
+</tr>
+<tr>
+<td><code>Storage Admin</code></td>
+<td>Create/modify/delete disks, images, snapshots</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-custom-roles-use-when-predefined-doesnt-fit">3. Custom Roles — Use when predefined doesn't fit</h4>
+<ul>
+<li>You define the exact set of permissions</li>
+<li>Can be created at project or organization level</li>
+<li>Requires ongoing maintenance when GCP adds new permissions</li>
+</ul>
+<blockquote>
+<p>💡 <strong>PCA principle:</strong> Grant the <strong>minimum permissions</strong> needed. Prefer predefined. Use custom only when predefined is too broad <em>and</em> you need tighter control.</p>
+</blockquote>
+<hr />
+<h3 id="iam-conditions">IAM Conditions</h3>
+<ul>
+<li>Add <strong>attribute-based conditions</strong> to role bindings</li>
+<li>Restrict access by: date/time, resource type, resource name, IP address</li>
+<li>Example: grant <code>storage.objectViewer</code> only between 9am–5pm on weekdays</li>
+</ul>
+<hr />
+<h3 id="organisation-policies">Organisation Policies</h3>
+<p>An <strong>Org Policy</strong> is a <strong>configuration of restrictions</strong> applied at the org, folder, or project level.</p>
+<ul>
+<li>Restricts <em>what</em> can be done (not <em>who</em>) — enforces compliance guardrails</li>
+<li>Defined using <strong>constraints</strong> (e.g., <code>iam.disableServiceAccountKeyCreation</code>)</li>
+<li>Inherited by all child resources</li>
+<li>Only an <strong>Org Policy Admin</strong> can grant exceptions</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Example constraints:
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>- Disable service account key creation
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>- Restrict which regions resources can be deployed in
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>- Prevent public Cloud Storage buckets
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>- Restrict allowed external IPs for VMs
+</code></pre></div>
+<blockquote>
+<p><strong>IAM vs Org Policy:</strong><br />
+IAM controls <em>who</em> can do what on a resource.<br />
+Org Policy controls <em>what</em> can be done, regardless of who.</p>
+</blockquote>
+<hr />
+<h3 id="service-accounts">Service Accounts</h3>
+<p>A <strong>service account</strong> is an identity for a <strong>non-human actor</strong> (application, VM, pipeline).</p>
+<h4 id="types-of-service-accounts">Types of Service Accounts</h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Email format</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>User-created (custom)</strong></td>
+<td><code>name@project.iam.gserviceaccount.com</code></td>
+<td>Full control, explicit creation</td>
+</tr>
+<tr>
+<td><strong>Default Compute Engine</strong></td>
+<td><code>{proj-num}-compute@developer.gserviceaccount.com</code></td>
+<td>Auto-created; auto-granted Editor — disable or scope down</td>
+</tr>
+<tr>
+<td><strong>Google APIs SA</strong></td>
+<td><code>{proj-num}@cloudservices.gserviceaccount.com</code></td>
+<td>Runs internal Google processes; auto Editor</td>
+</tr>
+</tbody>
+</table>
+<h4 id="service-account-keys">Service Account Keys</h4>
+<table>
+<thead>
+<tr>
+<th>Key Type</th>
+<th>Managed by</th>
+<th>Best practice</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Google-managed</strong></td>
+<td>GCP rotates automatically</td>
+<td>✅ Always prefer this</td>
+</tr>
+<tr>
+<td><strong>User-managed</strong></td>
+<td>You create, store, rotate</td>
+<td>⚠️ High risk if leaked — establish rotation policies</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>💡 Avoid user-managed keys wherever possible. Use Workload Identity Federation or attached service accounts instead.</p>
+</blockquote>
+<h4 id="access-scopes-for-default-sa-on-vms">Access Scopes (for default SA on VMs)</h4>
+<ul>
+<li>Scopes are legacy tokens that further restrict what a service account can do on a VM</li>
+<li>For <strong>user-created service accounts</strong>, rely entirely on <strong>IAM roles</strong> — scopes are ignored</li>
+<li>For the <strong>default service account</strong>, scopes act as a secondary guard</li>
+</ul>
+<hr />
+<h3 id="iam-best-practices">IAM Best Practices</h3>
+<table>
+<thead>
+<tr>
+<th>Practice</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Grant roles to <strong>Google Groups</strong>, not individuals</td>
+<td>Update group membership instead of IAM policies</td>
+</tr>
+<tr>
+<td>Use <strong>principle of least privilege</strong></td>
+<td>Limit blast radius of compromised credentials</td>
+</tr>
+<tr>
+<td>Audit with <strong>Cloud Audit Logs</strong> (<code>setIamPolicy</code>)</td>
+<td>Track who changed what access</td>
+</tr>
+<tr>
+<td>Use <strong>predefined roles</strong> over basic</td>
+<td>Prevent accidental over-permission</td>
+</tr>
+<tr>
+<td>Be careful with <code>serviceAccountUser</code> role</td>
+<td>Grants access to <em>all resources</em> the SA can access</td>
+</tr>
+<tr>
+<td>Name service accounts clearly + use naming conventions</td>
+<td>Easier governance at scale</td>
+</tr>
+<tr>
+<td>Establish <strong>key rotation policies</strong> and audit with <code>serviceAccount.keys.list()</code></td>
+<td>Reduce leaked key exposure</td>
+</tr>
+<tr>
+<td>Use projects to group resources with the <strong>same trust boundary</strong></td>
+<td>Clean separation of concerns</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="identity-aware-proxy-iap">Identity-Aware Proxy (IAP)</h3>
+<ul>
+<li>Enforces <strong>identity-based access control</strong> at the application layer (not network layer)</li>
+<li>Acts as a central authorisation layer for HTTPS apps on GCP</li>
+<li>Users authenticate via Google Identity; IAP checks IAM policy before proxying the request</li>
+<li>Replaces VPN for internal app access — zero-trust model</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>User → IAP → [identity check + IAM policy check] → App (e.g., App Engine, GCE, GKE)
+</code></pre></div>
+<hr />
+<h3 id="sso-and-directory-sync">SSO and Directory Sync</h3>
+<ul>
+<li><strong>Google Cloud Directory Sync (GCDS):</strong> One-way sync from Active Directory / LDAP → Cloud Identity</li>
+<li><strong>SSO:</strong> Users authenticate with existing corporate IdP (SAML 2.0) — no separate Google password needed</li>
+<li>Deprovisioning in Cloud Identity = removes GCP access automatically</li>
+</ul>
+<hr />
+<h2 id="module-2-storage-and-database-services">Module 2 — Storage and Database Services</h2>
+<h3 id="storage-decision-tree">⚖️ Storage Decision Tree</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Is your data structured?
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>├── NO
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>│   ├── Need shared file system?   → Filestore
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>│   └── No                        → Cloud Storage
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>└── YES
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    ├── Workload is analytics?
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    │   ├── Need low latency + high R/W?  → Bigtable
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    │   └── No (batch SQL analytics)      → BigQuery
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    └── Not analytics
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>        ├── Not relational
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>        │   ├── Need app caching?          → Memorystore
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>        │   └── No                         → Firestore
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>        └── Relational
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>            ├── Need HTAP?                 → AlloyDB
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>            ├── Need global scalability?   → Spanner
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>            └── Standard OLTP             → Cloud SQL
+</code></pre></div>
+<hr />
+<h3 id="cloud-storage-object-storage">Cloud Storage (Object Storage)</h3>
+<h4 id="core-architecture">Core Architecture</h4>
+<ul>
+<li>Objects are <strong>immutable</strong> — versions replace objects, not modify them</li>
+<li>Files are stored in <strong>globally unique buckets</strong></li>
+<li>Encrypted at rest and in transit by default (no configuration needed)</li>
+<li>Bucket-level settings apply to all objects within</li>
+</ul>
+<h4 id="storage-classes">Storage Classes</h4>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Min Duration</th>
+<th>Use Case</th>
+<th>Access Frequency</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Standard</strong></td>
+<td>None</td>
+<td>Hot data, streaming, websites</td>
+<td>Frequent</td>
+</tr>
+<tr>
+<td><strong>Nearline</strong></td>
+<td>30 days</td>
+<td>Monthly backups, data lake cold tier</td>
+<td>~1×/month</td>
+</tr>
+<tr>
+<td><strong>Coldline</strong></td>
+<td>90 days</td>
+<td>DR archives</td>
+<td>~1×/quarter</td>
+</tr>
+<tr>
+<td><strong>Archive</strong></td>
+<td>365 days</td>
+<td>Regulatory long-term archiving</td>
+<td>~1×/year</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Choosing by location type:</strong>
+- <strong>Single region</strong> → lowest latency within that region
+- <strong>Dual-region</strong> → redundancy + geo-compliance within two regions
+- <strong>Multi-region</strong> → highest availability, global access (e.g., <code>us</code>, <code>eu</code>, <code>asia</code>)</p>
+<h4 id="autoclass">Autoclass</h4>
+<ul>
+<li>Automatically moves objects between storage classes based on access pattern</li>
+<li>Cold → warm if accessed; warm → cold if not accessed</li>
+<li>Removes the need to manually manage lifecycle rules for access-pattern-driven tiering</li>
+</ul>
+<h4 id="access-control">Access Control</h4>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Best for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IAM (uniform bucket-level)</strong></td>
+<td>✅ Recommended; applies to all objects in bucket</td>
+</tr>
+<tr>
+<td><strong>ACLs (object-level)</strong></td>
+<td>Legacy; per-object control; avoid mixing with IAM</td>
+</tr>
+<tr>
+<td><strong>Signed URLs</strong></td>
+<td>Time-limited access for unauthenticated users</td>
+</tr>
+<tr>
+<td><strong>Signed Policy Documents</strong></td>
+<td>Control what can be uploaded (POST operations)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Signed URLs:</strong>
+- A cryptographically signed URL tied to a service account
+- Time-limited (you set expiry), supports GET/PUT/DELETE
+- Any user with the URL can invoke the operation — no Google account needed
+- Use when you can't require users to have GCP credentials (e.g., external partners)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>gcloud<span class="w"> </span>storage<span class="w"> </span>signurl<span class="w"> </span>-d<span class="w"> </span>10m<span class="w"> </span>path/to/key.p12<span class="w"> </span>gs://bucket/object
+</code></pre></div>
+<h4 id="object-versioning">Object Versioning</h4>
+<ul>
+<li>When enabled: deletions and overwrites create <strong>non-current versions</strong>, not permanent deletes</li>
+<li>Charges apply for stored versions (treated as separate objects)</li>
+<li>Use <strong>Soft Delete</strong> (bucket-level) as a simpler alternative — retains deleted objects for a configurable period</li>
+</ul>
+<h4 id="object-lifecycle-management">Object Lifecycle Management</h4>
+<p>Define rules triggered by conditions:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">&quot;condition&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;age&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">365</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">  </span><span class="nt">&quot;action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Delete&quot;</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="p">},</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="p">{</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span><span class="nt">&quot;condition&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;age&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;matchesStorageClass&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;STANDARD&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span><span class="nt">&quot;action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;SetStorageClass&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;storageClass&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NEARLINE&quot;</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Object Retention Lock:</strong> Prevent objects from being deleted or modified for a set retention period (WORM compliance).</p>
+<h4 id="data-import-options">Data Import Options</h4>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>gcloud storage</code> / Console</td>
+<td>Small-medium uploads</td>
+</tr>
+<tr>
+<td><strong>Storage Transfer Service</strong></td>
+<td>Online bulk import from S3, HTTP, another GCS bucket</td>
+</tr>
+<tr>
+<td><strong>Transfer Appliance</strong></td>
+<td>Offline — ship physical hardware to Google</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="filestore">Filestore</h3>
+<ul>
+<li>Fully managed <strong>NFS file system</strong> (shared file storage)</li>
+<li>Supports NFS v3 and v4.1</li>
+<li>Lift-and-shift for apps that need a shared POSIX file system</li>
+<li>Use cases: media rendering, EDA, genome sequencing, content management</li>
+</ul>
+<hr />
+<h3 id="cloud-sql">Cloud SQL</h3>
+<ul>
+<li>Fully managed <strong>relational DB</strong>: MySQL, PostgreSQL, SQL Server</li>
+<li>Handles: patching, backups, replication, failover automatically</li>
+<li>Includes: managed network firewall, point-in-time recovery</li>
+</ul>
+<h4 id="key-capabilities">Key Capabilities</h4>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Replication</strong></td>
+<td>Read replicas (same/cross-region), HA failover replica</td>
+</tr>
+<tr>
+<td><strong>Backup</strong></td>
+<td>Automated daily backups + on-demand</td>
+</tr>
+<tr>
+<td><strong>Encryption</strong></td>
+<td>At rest and in transit by default</td>
+</tr>
+<tr>
+<td><strong>Capacity</strong></td>
+<td>Up to 64 TB</td>
+</tr>
+<tr>
+<td><strong>Connectivity</strong></td>
+<td>Public IP, Private IP (VPC), Cloud SQL Auth Proxy</td>
+</tr>
+</tbody>
+</table>
+<h4 id="connecting-to-cloud-sql">Connecting to Cloud SQL</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Option 1: Cloud SQL Auth Proxy     ← Recommended; encrypts, manages certs
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Option 2: Private IP (VPC peering) ← Low-latency internal access
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>Option 3: Public IP + SSL          ← For external clients
+</code></pre></div>
+<hr />
+<h3 id="cloud-spanner">Cloud Spanner</h3>
+<ul>
+<li>Fully managed, <strong>globally distributed, horizontally scalable relational DB</strong></li>
+<li>ACID transactions + strong consistency across regions</li>
+<li>Combines <strong>SQL + horizontal scale</strong> (no other managed DB does this)</li>
+</ul>
+<h4 id="architecture">Architecture</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Global Spanner Instance
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>  └── Replication across zones (Paxos consensus)
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>        └── Splits data across nodes automatically
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>              └── No manual sharding needed
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Characteristic</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Consistency</strong></td>
+<td>External consistency (strongest available)</td>
+</tr>
+<tr>
+<td><strong>Scale</strong></td>
+<td>Petabytes; nodes added without downtime</td>
+</tr>
+<tr>
+<td><strong>Availability</strong></td>
+<td>99.999% SLA for multi-region</td>
+</tr>
+<tr>
+<td><strong>SQL</strong></td>
+<td>Full ANSI SQL with joins, indexes</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Best for: global financial systems, inventory, ad-tech — anywhere needing ACID at massive scale.</p>
+</blockquote>
+<hr />
+<h3 id="alloydb">AlloyDB</h3>
+<ul>
+<li>Fully managed <strong>PostgreSQL-compatible</strong> DB optimised for <strong>HTAP</strong> (hybrid transactional + analytical)</li>
+<li>Google-built database engine on cloud-native multi-node architecture</li>
+<li><strong>4× faster than standard PostgreSQL</strong> for OLTP; <strong>100× faster</strong> for analytical queries</li>
+<li>Built-in <strong>Vertex AI integration</strong> for ML model calls from SQL</li>
+<li>99.99% SLA including maintenance</li>
+</ul>
+<blockquote>
+<p>Choose AlloyDB over Cloud SQL when: you need HTAP, Vertex AI integration, or extreme PostgreSQL performance at scale. Choose Cloud SQL for standard PostgreSQL/MySQL/SQL Server workloads.</p>
+</blockquote>
+<hr />
+<h3 id="firestore">Firestore</h3>
+<ul>
+<li>Fully managed <strong>serverless NoSQL document database</strong></li>
+<li>Real-time sync + offline support (mobile/web SDKs)</li>
+<li>ACID transactions, multi-region replication, strong consistency</li>
+</ul>
+<h4 id="modes">Modes</h4>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Native mode</strong></td>
+<td>New mobile/web apps with real-time sync</td>
+</tr>
+<tr>
+<td><strong>Datastore mode</strong></td>
+<td>Migrating existing Datastore server-side apps</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Best for: mobile apps, real-time collaboration, IoT state management, user profiles.</p>
+</blockquote>
+<hr />
+<h3 id="bigtable">Bigtable</h3>
+<ul>
+<li>Fully managed <strong>wide-column NoSQL</strong> database</li>
+<li>Petabyte-scale; sub-10ms latency at high throughput</li>
+<li>Used by Google Search, Maps, Gmail</li>
+</ul>
+<h4 id="internal-architecture">Internal Architecture</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Processing (Compute)       separated from       Storage (Colossus)
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>     ↓                                                ↓
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>Tablet servers handle requests             Data stored in SSTables
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>     ↓                                                ↓
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>Learns access patterns → auto-rebalances tablets across nodes
+</code></pre></div>
+<p><strong>Throughput scales linearly</strong> — add nodes, get proportional throughput increase.<br />
+<strong>Rebalancing:</strong> Bigtable moves tablets (not data) when nodes are added, so no downtime.</p>
+<table>
+<thead>
+<tr>
+<th>Characteristic</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Data model</strong></td>
+<td>Rows × columns × timestamp (time-series native)</td>
+</tr>
+<tr>
+<td><strong>Max cell size</strong></td>
+<td>10 MB</td>
+</tr>
+<tr>
+<td><strong>Max row size</strong></td>
+<td>100 MB</td>
+</tr>
+<tr>
+<td><strong>Scale</strong></td>
+<td>Petabytes; nodes added without restart</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Best for: IoT telemetry, financial tick data, ad-tech event logs, ML feature stores.</p>
+</blockquote>
+<hr />
+<h3 id="memorystore">Memorystore</h3>
+<ul>
+<li>Fully managed <strong>in-memory data store</strong> (Redis and Memcached)</li>
+<li>Sub-millisecond latency for read-heavy, session, or caching workloads</li>
+<li>Fully compatible with Redis/Memcached APIs — no code changes needed</li>
+<li>Use for: <strong>application caching, session management, leaderboards, real-time counters</strong></li>
+</ul>
+<hr />
+<h3 id="storage-database-comparison">⚖️ Storage &amp; Database Comparison</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Type</th>
+<th>Best For</th>
+<th>Max Scale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cloud Storage</strong></td>
+<td>Object</td>
+<td>Blobs, files, backups, static assets</td>
+<td>Petabytes</td>
+</tr>
+<tr>
+<td><strong>Filestore</strong></td>
+<td>File (NFS)</td>
+<td>Shared POSIX file system</td>
+<td>100+ TB</td>
+</tr>
+<tr>
+<td><strong>Cloud SQL</strong></td>
+<td>Relational</td>
+<td>Standard OLTP, web apps, SQL workloads</td>
+<td>64 TB</td>
+</tr>
+<tr>
+<td><strong>AlloyDB</strong></td>
+<td>Relational (HTAP)</td>
+<td>High-perf PostgreSQL + analytics + AI</td>
+<td>Petabytes</td>
+</tr>
+<tr>
+<td><strong>Spanner</strong></td>
+<td>Relational + global</td>
+<td>Global OLTP, financial systems</td>
+<td>Petabytes</td>
+</tr>
+<tr>
+<td><strong>Firestore</strong></td>
+<td>NoSQL document</td>
+<td>Mobile/web real-time, offline-first</td>
+<td>Terabytes</td>
+</tr>
+<tr>
+<td><strong>Bigtable</strong></td>
+<td>NoSQL wide-column</td>
+<td>High-throughput analytics, time-series</td>
+<td>Petabytes</td>
+</tr>
+<tr>
+<td><strong>BigQuery</strong></td>
+<td>Analytical warehouse</td>
+<td>SQL analytics, BI, large-scale queries</td>
+<td>Petabytes</td>
+</tr>
+<tr>
+<td><strong>Memorystore</strong></td>
+<td>In-memory cache</td>
+<td>App caching, sessions, leaderboards</td>
+<td>300 GB</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="module-3-resource-management">Module 3 — Resource Management</h2>
+<h3 id="resource-hierarchy-billing">Resource Hierarchy &amp; Billing</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Organisation → Folders → Projects → Resources
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>Billing accumulates UPWARD:
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>  Resource usage → Project billing account → Organisation billing
+</code></pre></div>
+<ul>
+<li>Each <strong>resource belongs to exactly one project</strong></li>
+<li>Each <strong>project is tied to one billing account</strong></li>
+<li><strong>Organisation node</strong> aggregates all billing accounts</li>
+</ul>
+<h3 id="labels">Labels</h3>
+<p>Key-value pairs attached to resources (VMs, disks, snapshots, images, buckets, etc.)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>team:engineering       environment:prod
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>component:frontend     state:readyfordeletion
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>owner:alice            cost-center:marketing
+</code></pre></div>
+<p><strong>Uses:</strong>
+- Filter resources in console or API
+- Cost allocation and billing export analysis
+- Bulk operations in scripts
+- Inventory and auditing</p>
+<blockquote>
+<p>Up to <strong>64 labels</strong> per resource. Labels propagate through billing exports.</p>
+</blockquote>
+<h3 id="labels-vs-network-tags">Labels vs Network Tags</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Labels</strong></th>
+<th><strong>Network Tags</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Applied to</td>
+<td>VMs, disks, snapshots, images, buckets, etc.</td>
+<td>VM instances only</td>
+</tr>
+<tr>
+<td>Format</td>
+<td>Key-value pairs</td>
+<td>Plain strings</td>
+</tr>
+<tr>
+<td>Primary use</td>
+<td>Organisation, cost tracking, filtering</td>
+<td>Networking (firewall rules, routing)</td>
+</tr>
+<tr>
+<td>Billing propagation</td>
+<td>✅ Yes</td>
+<td>❌ No</td>
+</tr>
+</tbody>
+</table>
+<h3 id="quotas">Quotas</h3>
+<ul>
+<li>Applied at <strong>project level</strong> — limit resource consumption</li>
+<li>Two types: <strong>rate quotas</strong> (requests/sec) and <strong>allocation quotas</strong> (total count)</li>
+<li>Protects against runaway usage and ensures fair use across customers</li>
+<li>Can be increased via quota request in Cloud Console</li>
+</ul>
+<h3 id="budgets-billing-alerts">Budgets &amp; Billing Alerts</h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Budget → Alert thresholds (e.g., 50%, 90%, 100%) → Email notifications
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>                                                 → Pub/Sub → Cloud Run Function (programmatic action)
+</code></pre></div>
+<ul>
+<li>Budgets do <strong>not</strong> cap spending — they alert only</li>
+<li>Use Pub/Sub trigger to automate cost control actions (e.g., disable billing, spin down resources)</li>
+<li>Visualise spend with <strong>Looker Studio</strong> (formerly Data Studio) connected to <strong>BigQuery billing export</strong></li>
+</ul>
+<hr />
+<h2 id="module-4-resource-monitoring-cloud-observability">Module 4 — Resource Monitoring (Cloud Observability)</h2>
+<h3 id="google-cloud-observability-overview">Google Cloud Observability Overview</h3>
+<p>Unified, integrated observability stack — monitoring, logging, error reporting, tracing, profiling in one platform.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>Cloud Observability
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>  ├── Monitoring     → metrics, dashboards, alerting, uptime checks
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>  ├── Logging        → log ingestion, routing, export, analysis
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>  ├── Error Reporting → aggregated error tracking per service
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>  ├── Trace          → distributed request tracing, latency analysis
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>  └── Profiler       → CPU/memory profiling of running applications
+</code></pre></div>
+<p>Works across: <strong>Google Cloud, AWS</strong>, and on-premises (via agents).</p>
+<hr />
+<h3 id="cloud-monitoring">Cloud Monitoring</h3>
+<h4 id="metrics-scope">Metrics Scope</h4>
+<ul>
+<li><strong>Root entity</strong> that holds all monitoring config for one or more projects</li>
+<li>A metrics scope can monitor <strong>1–375 projects</strong></li>
+<li>Contains: dashboards, alerting policies, uptime checks, notification channels</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Metrics Scope (scoping project)
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>  └── Monitors:
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>        ├── GCP Project A
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>        ├── GCP Project B
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>        └── AWS Account (via connector)
+</code></pre></div>
+<h4 id="data-collection">Data Collection</h4>
+<ul>
+<li><strong>Ops Agent</strong> (recommended): Installed on Compute Engine VMs; collects host metrics, process metrics, and third-party app metrics that the hypervisor can't see (e.g., memory usage inside VM)</li>
+<li><strong>Cloud Monitoring API</strong>: Push custom metrics from any application</li>
+<li>Supports most major OS: CentOS, Ubuntu, Windows</li>
+</ul>
+<h4 id="dashboards-alerting">Dashboards &amp; Alerting</h4>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Dashboards</strong></td>
+<td>Custom charts visualising any metric; built-in templates available</td>
+</tr>
+<tr>
+<td><strong>Alerting policies</strong></td>
+<td>Trigger on threshold, rate of change, absence of metric</td>
+</tr>
+<tr>
+<td><strong>Uptime checks</strong></td>
+<td>HTTP/HTTPS/TCP checks from multiple regions; alert if service goes down</td>
+</tr>
+<tr>
+<td><strong>Notification channels</strong></td>
+<td>Email, PagerDuty, Slack, Pub/Sub, webhooks</td>
+</tr>
+</tbody>
+</table>
+<h4 id="custom-metrics">Custom Metrics</h4>
+<p>Use when built-in metrics don't capture what matters for your app (e.g., active game sessions, queue depth).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">google.cloud</span><span class="w"> </span><span class="kn">import</span> <span class="n">monitoring_v3</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="n">client</span> <span class="o">=</span> <span class="n">monitoring_v3</span><span class="o">.</span><span class="n">MetricServiceClient</span><span class="p">()</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c1"># Define and write custom time-series metric</span>
+</code></pre></div>
+<h4 id="autoscaling-with-custom-metrics">Autoscaling with Custom Metrics</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Custom metric (e.g., active users)
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>  → Cloud Monitoring
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>    → Autoscaler compares avg metric vs utilization target
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>      → Scale out if above / Scale in if below
+</code></pre></div>
+<hr />
+<h3 id="cloud-logging">Cloud Logging</h3>
+<ul>
+<li>Fully managed, real-time <strong>log ingestion and analysis</strong></li>
+<li>Ingests from: GCP services (automatic), VMs (via Ops Agent), AWS, on-prem</li>
+<li>Default retention: 30 days (_Default log bucket); configurable up to 3650 days</li>
+</ul>
+<h4 id="log-types">Log Types</h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>What it captures</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Admin Activity</strong></td>
+<td>Who changed what (always on, non-billable)</td>
+</tr>
+<tr>
+<td><strong>Data Access</strong></td>
+<td>Who read/wrote data (off by default; billable)</td>
+</tr>
+<tr>
+<td><strong>System Event</strong></td>
+<td>GCP infrastructure operations</td>
+</tr>
+<tr>
+<td><strong>Access Transparency</strong></td>
+<td>Google support access to your data</td>
+</tr>
+</tbody>
+</table>
+<h4 id="log-routing-and-export">Log Routing and Export</h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>Log sink → [filter] → Destination
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>                        ├── Cloud Storage (long-term archiving)
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>                        ├── BigQuery (analysis + Looker Studio dashboards)
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>                        ├── Pub/Sub (real-time streaming to SIEM, Splunk)
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>                        └── Another log bucket
+</code></pre></div>
+<p><strong>Reference architecture (Splunk integration):</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>GCP Logs → Log Router (sink) → Pub/Sub → Dataflow → Splunk
+</code></pre></div>
+<hr />
+<h3 id="error-reporting">Error Reporting</h3>
+<ul>
+<li>Automatically <strong>aggregates and groups errors</strong> from running cloud services</li>
+<li>Counts occurrences, shows first/last seen, links to stack trace</li>
+<li>Integrates with: App Engine, Cloud Run, Cloud Functions, Compute Engine (via logging agent)</li>
+<li>Sends alerts when new errors appear</li>
+</ul>
+<hr />
+<h3 id="cloud-trace">Cloud Trace</h3>
+<ul>
+<li><strong>Distributed latency tracing</strong> across services</li>
+<li>Collects and displays time-to-complete data for requests</li>
+<li>Identifies bottlenecks and slow dependencies in microservice architectures</li>
+<li>Auto-instrumented for App Engine; add SDK for Cloud Run/GKE/custom</li>
+</ul>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>Request →  Service A (50ms) → Service B (300ms) → DB (200ms)
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>                              ↑ bottleneck flagged by Trace
+</code></pre></div>
+<hr />
+<h3 id="cloud-profiler">Cloud Profiler</h3>
+<ul>
+<li>Continuous <strong>CPU and memory profiling</strong> of production applications</li>
+<li>Low overhead (&lt;1% CPU) — safe to run in production</li>
+<li>Helps identify which functions consume the most resources</li>
+</ul>
+<hr />
+<h2 id="pca-exam-scenarios-to-know">🎯 PCA Exam Scenarios to Know</h2>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Grant a contractor read access to one GCS bucket without a Google account</td>
+<td>Signed URL with time-limited expiry</td>
+</tr>
+<tr>
+<td>Prevent all teams from creating service account keys across the org</td>
+<td>Org Policy: <code>iam.disableServiceAccountKeyCreation</code></td>
+</tr>
+<tr>
+<td>Application needs to write to BigQuery — no user involved</td>
+<td>Custom service account + <code>bigquery.dataEditor</code> predefined role</td>
+</tr>
+<tr>
+<td>Need global relational DB with ACID + horizontal scale</td>
+<td>Cloud Spanner</td>
+</tr>
+<tr>
+<td>Need PostgreSQL with ML integration and HTAP</td>
+<td>AlloyDB</td>
+</tr>
+<tr>
+<td>Store IoT time-series data at petabyte scale, sub-10ms reads</td>
+<td>Bigtable</td>
+</tr>
+<tr>
+<td>Mobile app needs real-time sync + offline support</td>
+<td>Firestore</td>
+</tr>
+<tr>
+<td>Organise resources for cost allocation across teams</td>
+<td>Labels (<code>team:X</code>, <code>cost-center:Y</code>)</td>
+</tr>
+<tr>
+<td>Restrict firewall rules to specific VMs</td>
+<td>Network tags (not labels)</td>
+</tr>
+<tr>
+<td>Application logs are going to Splunk for SIEM analysis</td>
+<td>Log Router sink → Pub/Sub → Dataflow → Splunk</td>
+</tr>
+<tr>
+<td>Alert ops team when VM CPU exceeds 80% for 5 minutes</td>
+<td>Cloud Monitoring alerting policy with notification channel</td>
+</tr>
+<tr>
+<td>Debug a slow microservice call chain</td>
+<td>Cloud Trace</td>
+</tr>
+<tr>
+<td>VM memory metrics not appearing in Cloud Monitoring</td>
+<td>Install Ops Agent on the VM</td>
+</tr>
+<tr>
+<td>Grant IAM access to a whole team without editing IAM per person</td>
+<td>Create a Google Group, grant role to the group</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="key-cli-reference">🔗 Key CLI Reference</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># IAM</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>gcloud<span class="w"> </span>projects<span class="w"> </span>add-iam-policy-binding<span class="w"> </span>PROJECT<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">  </span>--member<span class="o">=</span><span class="s2">&quot;serviceAccount:sa@project.iam.gserviceaccount.com&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">  </span>--role<span class="o">=</span><span class="s2">&quot;roles/storage.objectAdmin&quot;</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="c1"># Service Account</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>gcloud<span class="w"> </span>iam<span class="w"> </span>service-accounts<span class="w"> </span>create<span class="w"> </span>my-sa<span class="w"> </span>--display-name<span class="o">=</span><span class="s2">&quot;My Service Account&quot;</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>gcloud<span class="w"> </span>iam<span class="w"> </span>service-accounts<span class="w"> </span>keys<span class="w"> </span>list<span class="w"> </span>--iam-account<span class="o">=</span>my-sa@project.iam.gserviceaccount.com
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="c1"># Cloud Storage</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>gcloud<span class="w"> </span>storage<span class="w"> </span>signurl<span class="w"> </span>-d<span class="w"> </span>10m<span class="w"> </span>key.p12<span class="w"> </span>gs://bucket/object
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>gcloud<span class="w"> </span>storage<span class="w"> </span>buckets<span class="w"> </span>update<span class="w"> </span>gs://bucket<span class="w"> </span>--lifecycle-file<span class="o">=</span>lifecycle.json
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a>
+<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="c1"># Labels</span>
+<a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a>gcloud<span class="w"> </span>compute<span class="w"> </span>instances<span class="w"> </span>add-labels<span class="w"> </span>my-vm<span class="w"> </span>--labels<span class="o">=</span><span class="nv">env</span><span class="o">=</span>prod,team<span class="o">=</span>backend
+<a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a>
+<a id="__codelineno-21-17" name="__codelineno-21-17" href="#__codelineno-21-17"></a><span class="c1"># Monitoring</span>
+<a id="__codelineno-21-18" name="__codelineno-21-18" href="#__codelineno-21-18"></a>gcloud<span class="w"> </span>monitoring<span class="w"> </span>dashboards<span class="w"> </span>create<span class="w"> </span>--config-from-file<span class="o">=</span>dashboard.json
+<a id="__codelineno-21-19" name="__codelineno-21-19" href="#__codelineno-21-19"></a>gcloud<span class="w"> </span>logging<span class="w"> </span>sinks<span class="w"> </span>create<span class="w"> </span>my-sink<span class="w"> </span>bigquery.googleapis.com/projects/PROJECT/datasets/DS<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-21-20" name="__codelineno-21-20" href="#__codelineno-21-20"></a><span class="w">  </span>--log-filter<span class="o">=</span><span class="s1">&#39;resource.type=&quot;gce_instance&quot;&#39;</span>
+</code></pre></div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "search.suggest", "search.highlight", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
